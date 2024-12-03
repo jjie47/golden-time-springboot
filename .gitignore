@@ -124,5 +124,5 @@ $RECYCLE.BIN/
 *.lnk
 
 ### Custom ###
-config.env
+.env
 golden-time.sql
