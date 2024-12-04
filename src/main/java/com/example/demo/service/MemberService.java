@@ -25,17 +25,17 @@ public class MemberService {
 //	private FileMapper fmapper;
 //
 //
-//	@Override
-//	public boolean login(String userid, String userpw) {
-//		UserDTO user = umapper.getUserByUserid(userid);
-//		if(user != null) {
-//			if(user.getUserpw().equals(userpw)) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//
+
+	public boolean login(String memberId, String password) {
+		MemberDTO member = mMapper.getMemberByMemberId(memberId);
+		if(member != null) {
+			if(member.getPassword().equals(password)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	
 	// 아이디 중복 확인
 	public boolean checkId(String memberId) {
