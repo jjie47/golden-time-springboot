@@ -4,7 +4,12 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.MemberInfoResponseDto;
 
-@Service
+import com.example.demo.dto.MemberUpdateRequestDto;
+
+import jakarta.transaction.Transactional;
+
 public interface MemberService {
 	MemberInfoResponseDto get(String memberId);
+	boolean update(MemberUpdateRequestDto member);
+	boolean delete(String memberId);
 }

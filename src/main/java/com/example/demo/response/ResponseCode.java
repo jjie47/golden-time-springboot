@@ -17,6 +17,10 @@ public enum ResponseCode {
 	MEMBER_DELETE_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "사용자 정보 삭제 성공"),
 	LIKES_GET_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "즐겨찾기 목록 조회 성공"),
 	LIKES_DELETE_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "즐겨찾기 삭제 성공"),
+
+	REVIEWS_GET_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "리뷰 목록 조회 성공"),
+	REVIEWS_UPDATE_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "리뷰 수정 성공"),
+	REVIEWS_DELETE_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "리뷰 삭제 성공"),
 	
 	// 201 Created
 	
@@ -34,6 +38,8 @@ public enum ResponseCode {
 	SESSION_NOT_FOUND(HttpStatus.NOT_FOUND, ResultStatus.FAIL, "세션 정보를 찾을 수 없습니다."),
 	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, ResultStatus.FAIL, "사용자 정보를 찾을 수 없습니다."),
 	LIKES_NOT_FOUND(HttpStatus.NOT_FOUND, ResultStatus.FAIL, "즐겨찾기 정보를 찾을 수 없습니다."),
+
+	REVIEWS_NOT_FOUND(HttpStatus.NOT_FOUND, ResultStatus.FAIL, "리뷰 정보를 찾을 수 없습니다."),
 	
 	// 500 Internal Server Error
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, ResultStatus.FAIL, "서버에 오류가 발생하였습니다.");
