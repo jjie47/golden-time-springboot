@@ -8,12 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.MemberInfoResponseDto;
 import com.example.demo.dto.MemberUpdateRequestDto;
+import com.example.demo.entity.Member;
 import com.example.demo.response.ApiResponse;
 import com.example.demo.response.ResponseCode;
 import com.example.demo.service.MemberService;
@@ -29,6 +33,13 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService service;
+	
+	@PostMapping("login")
+	public ResponseEntity<String> login(@RequestBody Member member, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		session.setAttribute("loginMember", member.getMemberId());
+		return new ResponseEntity<String>("O", HttpStatus.OK);
+	}
 	
 	@GetMapping("session")
 	public ApiResponse<String> get(HttpServletRequest req) {
@@ -72,7 +83,7 @@ public class MemberController {
 	}
 	
 	@DeleteMapping("{memberId}")
-	public ApiResponse<String> delete(@PathVariable String memberId, HttpServletRequest req){
+	public ApiResponse<String> remove(@PathVariable String memberId, HttpServletRequest req){
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
 			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
