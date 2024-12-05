@@ -1,14 +1,14 @@
 insert into member (member_id, `password`, `nickname`, `email`, `phone_number`) values
-	('apple123', 'dkssud123!', '김사과', 'apple@naver.com', '010-1234-1234'),
-    ('banana123', 'dkssud123!', '반하나', 'banana@naver.com', '010-1234-1234'),
-    ('cherry123', 'dkssud123!', '이체리', 'cherry@naver.com', '010-1234-1234'),
-    ('Date123', 'dkssud123!', '대추', 'Date@naver.com', '010-1234-1234'),
-    ('Elderberry123', 'dkssud123!', '엘더베리', 'Elderberry@naver.com', '010-1234-1234'),
-    ('Fig123', 'dkssud123!', '무화과', 'Fig@naver.com', '010-1234-1234'),
-    ('Grape123', 'dkssud123!', '포도', 'Grape@naver.com', '010-1234-1234'),
-    ('Honeydew123', 'dkssud123!', '허니듀', 'Honeydew@naver.com', '010-1234-1234'),
-    ('Indianfig123', 'dkssud123!', '인디언무화과', 'Indianfig@naver.com', '010-1234-1234'),
-    ('Jackfruit123', 'dkssud123!', '잭프루트', 'Jackfruit@naver.com', '010-1234-1234');
+	('apple123', 'dkssud123!', '김사과', 'apple@naver.com', '01012341234'),
+    ('banana123', 'dkssud123!', '반하나', 'banana@naver.com', '01012341234'),
+    ('cherry123', 'dkssud123!', '이체리', 'cherry@naver.com', '01012341234'),
+    ('Date123', 'dkssud123!', '대추', 'Date@naver.com', '01012341234'),
+    ('Elderberry123', 'dkssud123!', '엘더베리', 'Elderberry@naver.com', '01012341234'),
+    ('Fig123', 'dkssud123!', '무화과', 'Fig@naver.com', '01012341234'),
+    ('Grape123', 'dkssud123!', '포도', 'Grape@naver.com', '01012341234'),
+    ('Honeydew123', 'dkssud123!', '허니듀', 'Honeydew@naver.com', '01012341234'),
+    ('Indianfig123', 'dkssud123!', '인디언무화과', 'Indianfig@naver.com', '01012341234'),
+    ('Jackfruit123', 'dkssud123!', '잭프루트', 'Jackfruit@naver.com', '01012341234');
     
 insert into duty (duty_id, duty_name, duty_div, duty_tel) values
 	('A1124291', '(의)가산의료재단광동병원', '병원', '02-2222-4888'),

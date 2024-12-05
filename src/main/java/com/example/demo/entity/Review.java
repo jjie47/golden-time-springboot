@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,6 +55,7 @@ public class Review {
 	
 	@ManyToOne
 	@JoinColumn(name="member_id", nullable=false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Member member;
 	
 	@ManyToOne
