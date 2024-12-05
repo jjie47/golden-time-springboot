@@ -14,8 +14,10 @@ public class MemberInfoResponseDto {
 	String phoneNumber;
 	String systemName;
 	String originName;
+	Long reviewCnt;
+	Long likeCnt;
 	
-	public static MemberInfoResponseDto toDto(Member entity) {
+	public static MemberInfoResponseDto toDto(Member entity, long reviewCnt, long likeCnt) {
 		return MemberInfoResponseDto.builder()
 				.memberId(entity.getMemberId())
 				.nickname(entity.getNickname())
@@ -23,6 +25,8 @@ public class MemberInfoResponseDto {
 				.phoneNumber(entity.getPhoneNumber())
 				.systemName(entity.getSystemName())
 				.originName(entity.getOriginName())
+				.reviewCnt(reviewCnt)
+				.likeCnt(likeCnt)
 				.build();
 	}
 }

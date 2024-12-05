@@ -9,7 +9,9 @@ import com.example.demo.dto.MemberInfoResponseDto;
 
 import com.example.demo.dto.MemberUpdateRequestDto;
 import com.example.demo.entity.Member;
+import com.example.demo.repository.LikeRepository;
 import com.example.demo.repository.MemberRepository;
+import com.example.demo.repository.ReviewRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -21,6 +23,10 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Autowired
 	private MemberRepository memberRepository;
+	@Autowired
+	private ReviewRepository reviewRepository;
+	@Autowired
+	private LikeRepository likeRepository; 
 	
 	@PersistenceContext
     private EntityManager em;
@@ -32,7 +38,7 @@ public class MemberServiceImpl implements MemberService{
 			// TODO: 예외 처리
 			return null;
 		}
-		return MemberInfoResponseDto.toDto(data.get());
+		return MemberInfoResponseDto.toDto(data.get(), reviewRepository.countByMember_MemberId(memberId), likeRepository.countByMember_MemberId(memberId));
 		
 		// SELECT * FROM TABLE
 		// memberRepository.findAll();

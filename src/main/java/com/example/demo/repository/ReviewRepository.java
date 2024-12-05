@@ -13,6 +13,8 @@ import com.example.demo.entity.Duty;
 import com.example.demo.entity.Like;
 import com.example.demo.entity.Review;
 
+import jakarta.transaction.Transactional;
+
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long>{
 	List<Review> findAllByMember_MemberId(String memberId);
@@ -22,4 +24,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long>{
 					"from Review r join r.member m join r.duty d " +
 					"where m.memberId = :memberId and :date <= r.updatedAt")
 	List<Review> findAllByMember_MemberIdAndUpdatedAtGreaterThanEqualMonths(@Param("memberId") String memberId, @Param("date") LocalDateTime date);
+	
+	Long countByMember_MemberId(String memberId);
 }

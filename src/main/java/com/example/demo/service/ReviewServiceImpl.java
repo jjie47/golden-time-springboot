@@ -38,8 +38,8 @@ public class ReviewServiceImpl implements ReviewService {
 				.collect(Collectors.toList());
 	}
 	@Override
-	public List<ReviewListResponseDto> getList(String memberId, int months) {
-		LocalDateTime date = LocalDateTime.now().minusMonths(months);
+	public List<ReviewListResponseDto> getList(String memberId, int month) {
+		LocalDateTime date = LocalDateTime.now().minusMonths(month);
 		return reviewRepository.findAllByMember_MemberIdAndUpdatedAtGreaterThanEqualMonths(memberId, date).stream()
 				.map(ReviewListResponseDto::toDto)
 				.collect(Collectors.toList());

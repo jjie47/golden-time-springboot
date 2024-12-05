@@ -1,6 +1,7 @@
 package com.example.demo.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.example.demo.entity.Duty;
 import com.example.demo.entity.Like;
@@ -15,8 +16,8 @@ import lombok.Data;
 public class ReviewListResponseDto {
 	long reviewId;
 	String content;
-	LocalDateTime createdAt;
-	LocalDateTime updatedAt;
+	String createdAt;
+	String updatedAt;
 	int rating;
 	String classification;
 	String memberId;
@@ -24,11 +25,12 @@ public class ReviewListResponseDto {
 	Duty duty;
 	
 	public static ReviewListResponseDto toDto(Review review) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
 		return ReviewListResponseDto.builder()
 				.reviewId(review.getReviewId())
 				.content(review.getContent())
-				.createdAt(review.getCreatedAt())
-				.updatedAt(review.getUpdatedAt())
+				.createdAt(review.getCreatedAt().format(dtf))
+				.updatedAt(review.getUpdatedAt().format(dtf))
 				.rating(review.getRating())
 				.classification(review.getClassification())
 				.memberId(review.getMember().getMemberId())
