@@ -20,7 +20,7 @@ public class MemberServiceImplTest {
 	private MemberRepository memberRepository;
 	
 	@Autowired
-	private MemberService memberService;
+	private MemberServiceImpl memberService;
 	
 //	@Test
 	void get() {

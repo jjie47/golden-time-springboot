@@ -125,5 +125,8 @@ $RECYCLE.BIN/
 
 ### Custom ###
 .env
+<<<<<<< HEAD
+=======
 config.env
+>>>>>>> a8f3bb1c4821ebea59951a848e435e22e1d55de8
 golden-time.sql

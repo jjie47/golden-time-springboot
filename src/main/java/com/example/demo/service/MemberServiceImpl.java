@@ -19,7 +19,7 @@ import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl{
 	
 	@Autowired
 	private MemberRepository memberRepository;
@@ -31,7 +31,6 @@ public class MemberServiceImpl implements MemberService{
 	@PersistenceContext
     private EntityManager em;
 	
-	@Override
 	public MemberInfoResponseDto getInfo(String memberId) {
 		Optional<Member> data = memberRepository.findByMemberId(memberId);
 		if(data.isEmpty()) {
@@ -40,7 +39,7 @@ public class MemberServiceImpl implements MemberService{
 		}
 		return MemberInfoResponseDto.toDto(data.get());
 	}
-	@Override
+	
 	public MemberProfileResponseDto getProfile(String memberId) {
 		Optional<Member> data = memberRepository.findByMemberId(memberId);
 		long reviewCnt = reviewRepository.countByMember_MemberId(memberId);
@@ -53,7 +52,6 @@ public class MemberServiceImpl implements MemberService{
 		return MemberProfileResponseDto.toDto(data.get(), reviewCnt, likeCnt);
 	}
 	
-	@Override
 	public boolean update(MemberUpdateRequestDto member) {
 		Member data = em.find(Member.class, member.getMemberId());
 		if(data==null) {
@@ -66,7 +64,6 @@ public class MemberServiceImpl implements MemberService{
 		return true;	
 	}
 	
-	@Override
 	public boolean delete(String memberId) {
 		Optional<Member> data = memberRepository.findByMemberId(memberId);
 		if(data.isPresent()) {
