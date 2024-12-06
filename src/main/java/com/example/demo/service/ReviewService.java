@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.PharmListDTO;
 import com.example.demo.domain.PharmReviewDTO;
+import com.example.demo.domain.ReviewWriteDTO;
 import com.example.demo.domain.ReviewListResponseDto;
 import com.example.demo.domain.ReviewUpdateRequestDto;
 import com.example.demo.domain.ReviewWriteDTO;
