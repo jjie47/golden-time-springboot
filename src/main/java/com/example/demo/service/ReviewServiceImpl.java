@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.LikeListResponseDto;
+import com.example.demo.dto.LikeItemDto;
 import com.example.demo.dto.ReviewListResponseDto;
 import com.example.demo.dto.ReviewUpdateRequestDto;
 import com.example.demo.entity.Like;

@@ -13,7 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.demo.dto.LikeListResponseDto;
+import com.example.demo.dto.LikeItemDto;
 import com.example.demo.dto.MemberInfoResponseDto;
 import com.example.demo.dto.MemberUpdateRequestDto;
 import com.example.demo.entity.Duty;
@@ -70,34 +70,34 @@ public class LikeServiceImplTest {
 	
 //	@Test
 	void getListByMemberId() {
-		List<LikeListResponseDto> expected = likeService.getList("testId");
-		for(LikeListResponseDto data: expected) {
+		List<LikeItemDto> expected = likeService.getList("testId");
+		for(LikeItemDto data: expected) {
 			System.out.println(data);
 		}
 	}
 	
 //	@Test
 	void getListByMemberIdWithLimit() {
-		List<LikeListResponseDto> expected = likeService.getList("testId", 3);
-		for(LikeListResponseDto data: expected) {
-			System.out.println(data);
-		}
-	}
-	
-//	@Test
-	void getListByMemberIdAndClassification() {
-		List<LikeListResponseDto> expected = likeService.getList("testId", "약국");
-		for(LikeListResponseDto data: expected) {
+		List<LikeItemDto> expected = likeService.getList("testId", 3);
+		for(LikeItemDto data: expected) {
 			System.out.println(data);
 		}
 	}
 	
 	@Test
+	void getListByMemberIdAndClassification() {
+		List<LikeItemDto> expected = likeService.getList("testId", "");
+		for(LikeItemDto data: expected) {
+			System.out.println(data);
+		}
+	}
+	
+//	@Test
 	void delete() {
 		if(likeService.delete(6)) {
 			System.out.println("삭제 성공");
-			List<LikeListResponseDto> expected = likeService.getList("testId");
-			for(LikeListResponseDto data: expected) {
+			List<LikeItemDto> expected = likeService.getList("testId");
+			for(LikeItemDto data: expected) {
 				System.out.println(data);
 			}
 		}

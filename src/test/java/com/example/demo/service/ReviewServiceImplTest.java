@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.demo.dto.LikeListResponseDto;
+import com.example.demo.dto.LikeItemDto;
 import com.example.demo.dto.MemberInfoResponseDto;
 import com.example.demo.dto.MemberUpdateRequestDto;
 import com.example.demo.dto.ReviewListResponseDto;
@@ -79,12 +79,12 @@ public class ReviewServiceImplTest {
 		likeRepository.saveAll(llist);
 		
 		rlist = new ArrayList<>();
-		rlist.add(new Review("내용1", 5, LocalDateTime.of(2024, 12, 4, 0, 0, 0), "병원", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
-		rlist.add(new Review("내용2", 5, LocalDateTime.of(2024, 11, 24, 0, 0, 0), "병원", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
-		rlist.add(new Review("내용3", 5, LocalDateTime.of(2024, 11, 14, 0, 0, 0), "병원", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
-		rlist.add(new Review("내용4", 5, LocalDateTime.of(2024, 11, 4, 0, 0, 0), "병원", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
-		rlist.add(new Review("내용5", 5, LocalDateTime.of(2024, 10, 24, 0, 0, 0), "병원", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
-		rlist.add(new Review("내용6", 5, LocalDateTime.of(2024, 10, 14, 0, 0, 0), "약국", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
+		rlist.add(new Review("내용1", 5, "병원", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
+		rlist.add(new Review("내용2", 5, "병원", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
+		rlist.add(new Review("내용3", 5, "병원", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
+		rlist.add(new Review("내용4", 5, "병원", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
+		rlist.add(new Review("내용5", 5, "병원", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
+		rlist.add(new Review("내용6", 5, "약국", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
 		reviewRepository.saveAll(rlist);
 		
 		List<ReviewListResponseDto> before = reviewService.getList("testId");

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.LikeListResponseDto;
+import com.example.demo.dto.LikeItemDto;
 import com.example.demo.dto.MemberUpdateRequestDto;
 import com.example.demo.dto.ReviewListResponseDto;
 import com.example.demo.dto.ReviewUpdateRequestDto;
