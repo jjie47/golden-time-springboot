@@ -29,7 +29,7 @@ public class MemberServiceImplTest {
 	void get() {
 		Member actual = new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234");
 		memberRepository.save(actual);
-		MemberInfoResponseDto expected = memberService.get("testId");
+		MemberInfoResponseDto expected = memberService.getInfo("testId");
 		assertThat(expected).usingRecursiveComparison()
 							.ignoringFields("systemName")
 							.ignoringFields("originName")
@@ -43,7 +43,7 @@ public class MemberServiceImplTest {
 		MemberUpdateRequestDto member = new MemberUpdateRequestDto("testId", "1234", "change", "testEmail", "010-1234-1234");
 		if(memberService.update(member)) {
 			System.out.println("변경 성공");
-			MemberInfoResponseDto expected = memberService.get("testId");
+			MemberInfoResponseDto expected = memberService.getInfo("testId");
 			assertThat(expected).usingRecursiveComparison()
 			.ignoringFields("systemName")
 			.ignoringFields("originName")
@@ -61,7 +61,7 @@ public class MemberServiceImplTest {
 		memberRepository.save(actual);
 		if(memberService.delete("testId")) {
 			System.out.println("삭제 성공");
-			MemberInfoResponseDto expected = memberService.get("testId");
+			MemberInfoResponseDto expected = memberService.getInfo("testId");
 			assertThat(expected).isNull();
 		}
 		else {

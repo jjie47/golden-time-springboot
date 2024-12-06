@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.LikeListResponseDto;
+import com.example.demo.dto.LikeItemDto;
 import com.example.demo.dto.MemberUpdateRequestDto;
 import com.example.demo.dto.ReviewListResponseDto;
 import com.example.demo.dto.ReviewUpdateRequestDto;
@@ -47,7 +47,7 @@ public class ReviewController {
 	}
 	
 	@GetMapping("reviews/month")
-	public ApiResponse<List<ReviewListResponseDto>> getlist(@PathVariable String memberId, @RequestParam int months, HttpServletRequest req) {
+	public ApiResponse<List<ReviewListResponseDto>> getlist(@PathVariable String memberId, @RequestParam int month, HttpServletRequest req) {
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
 			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
@@ -55,14 +55,14 @@ public class ReviewController {
 		if(!loginMember.equals(memberId)) {
 			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
 		}
-		List<ReviewListResponseDto> list = service.getList(loginMember, months);
+		List<ReviewListResponseDto> list = service.getList(loginMember, month);
 		if(list!=null) {
 			return ApiResponse.success(list, ResponseCode.REVIEWS_GET_SUCCESS);
 		}
 		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
 	}
 	
-	@GetMapping("reviews/classfication")
+	@GetMapping("reviews/classification")
 	public ApiResponse<List<ReviewListResponseDto>> getlist(@PathVariable String memberId,
 													@RequestParam String classification,
 													HttpServletRequest req) {

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.LikeListResponseDto;
+import com.example.demo.dto.LikeItemDto;
 import com.example.demo.dto.ReviewListResponseDto;
 import com.example.demo.dto.ReviewUpdateRequestDto;
 import com.example.demo.entity.Like;
@@ -38,8 +38,8 @@ public class ReviewServiceImpl implements ReviewService {
 				.collect(Collectors.toList());
 	}
 	@Override
-	public List<ReviewListResponseDto> getList(String memberId, int months) {
-		LocalDateTime date = LocalDateTime.now().minusMonths(months);
+	public List<ReviewListResponseDto> getList(String memberId, int month) {
+		LocalDateTime date = LocalDateTime.now().minusMonths(month);
 		return reviewRepository.findAllByMember_MemberIdAndUpdatedAtGreaterThanEqualMonths(memberId, date).stream()
 				.map(ReviewListResponseDto::toDto)
 				.collect(Collectors.toList());

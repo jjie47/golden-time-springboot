@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,6 +55,7 @@ public class Review {
 	
 	@ManyToOne
 	@JoinColumn(name="member_id", nullable=false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Member member;
 	
 	@ManyToOne
@@ -61,22 +64,20 @@ public class Review {
 	
 	@PrePersist
 	public void prePersist() {
-//		this.createdAt = LocalDateTime.now();
+		this.createdAt = LocalDateTime.now();
 		this.updatedAt = this.createdAt;
 	}
 	
-//	@PreUpdate
-//	public void preUpdate() {
-//		this.updatedAt = LocalDateTime.now();
-//	}
+	@PreUpdate
+	public void preUpdate() {
+		this.updatedAt = LocalDateTime.now();
+	}
 	
-	public Review(String content, int rating, LocalDateTime createdAt, String classification, Member member, Duty duty) {
+	public Review(String content, int rating, String classification, Member member, Duty duty) {
 		this.content = content;
 		this.rating = rating;
-		this.createdAt = createdAt;
 		this.classification = classification;
 		this.member = member;
 		this.duty = duty;
 	}
-	
 }
