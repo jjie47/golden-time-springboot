@@ -1,31 +1,24 @@
 package com.example.demo.service;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.MemberDTO;
-//import com.example.demo.mapper.BoardMapper;
-//import com.example.demo.mapper.FileMapper;
-//import com.example.demo.mapper.ReplyMapper;
-//import com.example.demo.mapper.UserMapper;
 import com.example.demo.mapper.MemberMapper;
+
+import com.example.demo.dto.MemberInfoResponseDto;
+import com.example.demo.dto.MemberProfileResponseDto;
+import com.example.demo.dto.MemberUpdateRequestDto;
 
 @Service
 public class MemberService {
 	
 	@Autowired
 	private MemberMapper mMapper;
-//	@Autowired
-//	private BoardMapper bmapper;
-//	@Autowired
-//	private ReplyMapper rmapper;
-//	@Autowired
-//	private FileMapper fmapper;
-//
-//
-
+	
 	public boolean login(String memberId, String password) {
 		MemberDTO member = mMapper.getMemberByMemberId(memberId);
 		if(member != null) {
@@ -59,34 +52,6 @@ public class MemberService {
 	public boolean join(MemberDTO member) {
 		return mMapper.insertMember(member) == 1;
 	}
-	
-	
-	
-//
-//	@Override
-//	public UserDTO getDetail(String userid) {
-//		return umapper.getUserByUserid(userid);
-//	}
-//	
-//	@Override
-//	public boolean modify(UserDTO user) {
-//		return umapper.updateUser(user) == 1;
-//	}
-//
-//	@Override
-//	public boolean leaveId(String userid) {
-//		List<BoardDTO> list = bmapper.getListByUserid(userid);
-//		for(BoardDTO board : list) {
-//			rmapper.deleteRepliesByBoardnum(board.getBoardnum());
-//			fmapper.deleteFilesByBoardnum(board.getBoardnum());
-//		}
-//		return umapper.deleteUser(userid) == 1;
-//	}
 
 }
-
-
-
-
-
 

@@ -13,7 +13,10 @@ golden-time-springboot/
 │   │   │       │	├── ClipSolutionController.java
 │   │   │       │	├── ReviewHospitalController.java
 │   │   │       │	└── ReviewPharmacyController.java
-│   │   │       ├── domain/
+│   │   │       ├── dto/
+│   │   │       ├── entity/
+│   │   │       ├── repository/
+│   │   │       ├── response/
 │   │   │       ├── mapper/
 │   │   │       └── service/
 │   │   └── resources/
