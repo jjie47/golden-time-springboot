@@ -1,0 +1,67 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.ReviewMapper">
+
+	<!--약국 목록에서 리뷰 갯수 가져옴-->
+	<select id="getPharmreviewcount"
+		resultType="com.example.demo.domain.PharmListDTO"> 
+		SELECT 
+		duty_id AS
+		hpid, 
+		COUNT(*) AS count, 
+		ROUND(AVG(rating), 1) AS averageRating 
+		FROM
+		review WHERE duty_id IN 
+		<foreach item="item" index="index"
+			collection="hpid" open="(" separator="," close=")">
+			#{item}
+		</foreach> 
+		GROUP BY duty_id; 
+	</select>
+
+	<!--리뷰 단일로 가져옴-->
+	<select id="getPharmReview" parameterType="String"
+		resultType="PharmReviewDTO">
+		SELECT
+		r.member_id,
+		r.created_at,
+		r.rating,
+		r.content
+		FROM
+		review r
+		JOIN
+		duty d ON r.duty_id = d.duty_id
+		WHERE
+		d.duty_id = #{hpid};
+	</select>
+	
+	<!--닉네임 가져오기-->
+	<select id="getNickName" resultType="String">
+        SELECT nickname
+        FROM member
+        WHERE member_id = #{memberid}
+    </select>
+
+	<!-- 약국 체크 -->
+	<select id="checkpharm" parameterType="string" resultType="boolean">
+		SELECT COUNT(1) > 0
+		FROM `duty`
+		WHERE `duty_id` = #{dutyId}
+	</select>
+
+	<!-- 리뷰 넣기 -->
+	<insert id="writeReview" parameterType="ReviewWriteDTO">
+		INSERT INTO `review`
+		(`content`, `rating`, `classification`, `member_id`, `duty_id`)
+		VALUES
+		(#{content}, #{rating}, #{classification}, #{memberId}, #{dutyId});
+	</insert>
+
+	<!-- 리뷰가 없다면 병원 먼저 넣기-->
+	<insert id="insertPharm" parameterType="ReviewWriteDTO">
+		INSERT INTO `duty`
+		(`duty_id`, `duty_name`, `duty_div`, `duty_tel`)
+		VALUES
+		(#{dutyId}, #{dutyName}, #{classification}, #{dutyTel});
+	</insert>
+
+</mapper>

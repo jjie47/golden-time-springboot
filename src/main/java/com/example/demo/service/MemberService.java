@@ -1,12 +1,8 @@
 package com.example.demo.service;
 
-import org.springframework.stereotype.Service;
-
-import com.example.demo.dto.MemberInfoResponseDto;
-import com.example.demo.dto.MemberProfileResponseDto;
-import com.example.demo.dto.MemberUpdateRequestDto;
-
-import jakarta.transaction.Transactional;
+import com.example.demo.domain.MemberInfoResponseDto;
+import com.example.demo.domain.MemberProfileResponseDto;
+import com.example.demo.domain.MemberUpdateRequestDto;
 
 public interface MemberService {
 	MemberInfoResponseDto getInfo(String memberId);

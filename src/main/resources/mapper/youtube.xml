@@ -1,0 +1,19 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.YoutubeMapper">
+
+	<select id="getYoutube" resultType="com.example.demo.domain.YoutubeDTO">
+        SELECT 
+            youtube_id AS youtubeId,
+            title,
+            reference
+        FROM
+            clip_solution
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+    
+    <select id="getTotal" resultType="int">
+        SELECT COUNT(*) 
+        FROM clip_solution
+    </select>
+    
+</mapper>

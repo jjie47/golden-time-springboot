@@ -1,10 +1,5 @@
-package com.example.demo.dto;
+package com.example.demo.domain;
 
-import java.time.LocalDateTime;
-
-import com.example.demo.entity.Duty;
-import com.example.demo.entity.Like;
-import com.example.demo.entity.Member;
 import com.example.demo.entity.Review;
 
 import lombok.AllArgsConstructor;

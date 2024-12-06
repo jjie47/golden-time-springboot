@@ -1,11 +1,6 @@
-package com.example.demo.dto;
-
-import com.example.demo.entity.Duty;
-import com.example.demo.entity.Like;
-import com.example.demo.entity.Member;
+package com.example.demo.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 
 @Data

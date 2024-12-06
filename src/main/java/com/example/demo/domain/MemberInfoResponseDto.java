@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.domain;
 
 import com.example.demo.entity.Member;
 
@@ -7,22 +7,22 @@ import lombok.Data;
 
 @Data
 @Builder
-public class MemberProfileResponseDto {
+public class MemberInfoResponseDto {
 	String memberId;
 	String nickname;
+	String email;
+	String phoneNumber;
 	String systemName;
 	String originName;
-	long reviewCnt;
-	long likeCnt;
 	
-	public static MemberProfileResponseDto toDto(Member entity, long reviewCnt, long likeCnt) {
-		return MemberProfileResponseDto.builder()
+	public static MemberInfoResponseDto toDto(Member entity) {
+		return MemberInfoResponseDto.builder()
 				.memberId(entity.getMemberId())
 				.nickname(entity.getNickname())
+				.email(entity.getEmail())
+				.phoneNumber(entity.getPhoneNumber())
 				.systemName(entity.getSystemName())
 				.originName(entity.getOriginName())
-				.reviewCnt(reviewCnt)
-				.likeCnt(likeCnt)
 				.build();
 	}
 }
