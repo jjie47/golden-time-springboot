@@ -2,9 +2,9 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.domain.LikeItemDto;
-import com.example.demo.domain.LikeListRequestDto;
-import com.example.demo.domain.LikeListResponseDto;
+import com.example.demo.dto.LikeItemDto;
+import com.example.demo.dto.LikeListRequestDto;
+import com.example.demo.dto.LikeListResponseDto;
 
 public interface LikeService {
 	List<LikeItemDto> getList(String memberId);

@@ -5,9 +5,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.domain.MemberInfoResponseDto;
-import com.example.demo.domain.MemberProfileResponseDto;
-import com.example.demo.domain.MemberUpdateRequestDto;
+import com.example.demo.dto.MemberInfoResponseDto;
+import com.example.demo.dto.MemberProfileResponseDto;
+import com.example.demo.dto.MemberUpdateRequestDto;
 import com.example.demo.entity.Member;
 import com.example.demo.repository.LikeRepository;
 import com.example.demo.repository.MemberRepository;

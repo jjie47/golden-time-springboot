@@ -1,4 +1,4 @@
-package com.example.demo.domain;
+package com.example.demo.dto;
 
 import com.example.demo.entity.Duty;
 import com.example.demo.entity.Like;

@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.domain.MemberInfoResponseDto;
-import com.example.demo.domain.MemberProfileResponseDto;
-import com.example.demo.domain.MemberUpdateRequestDto;
-import com.example.demo.domain.ReviewListResponseDto;
-import com.example.demo.domain.ReviewUpdateRequestDto;
+import com.example.demo.dto.MemberInfoResponseDto;
+import com.example.demo.dto.MemberProfileResponseDto;
+import com.example.demo.dto.MemberUpdateRequestDto;
+import com.example.demo.dto.ReviewListResponseDto;
+import com.example.demo.dto.ReviewUpdateRequestDto;
 import com.example.demo.entity.Member;
 import com.example.demo.response.ApiResponse;
 import com.example.demo.response.ResponseCode;
