@@ -150,15 +150,6 @@ public class MemberController {
     
 
 
-
-
-	
-	@PostMapping("login")
-	public ResponseEntity<String> login(@RequestBody Member member, HttpServletRequest req) {
-		HttpSession session = req.getSession();
-		session.setAttribute("loginMember", member.getMemberId());
-		return new ResponseEntity<String>("O", HttpStatus.OK);
-	}
 	
 	@GetMapping("session")
 	public ApiResponse<String> get(HttpServletRequest req) {
@@ -234,7 +225,7 @@ public class MemberController {
 		return ApiResponse.fail("fail", ResponseCode.INTERNAL_SERVER_ERROR);
 	}
 	
-	@GetMapping("reviews")
+	@GetMapping("{memberId}/reviews")
 	public ApiResponse<List<ReviewListResponseDto>> getlist(@PathVariable String memberId, HttpServletRequest req) {
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
@@ -250,7 +241,7 @@ public class MemberController {
 		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
 	}
 	
-	@GetMapping("reviews/month")
+	@GetMapping("{memberId}/reviews/month")
 	public ApiResponse<List<ReviewListResponseDto>> getlist(@PathVariable String memberId, @RequestParam int month, HttpServletRequest req) {
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
@@ -266,7 +257,7 @@ public class MemberController {
 		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
 	}
 	
-	@GetMapping("reviews/classification")
+	@GetMapping("{memberId}/reviews/classification")
 	public ApiResponse<List<ReviewListResponseDto>> getlist(@PathVariable String memberId,
 													@RequestParam String classification,
 													HttpServletRequest req) {
@@ -284,7 +275,7 @@ public class MemberController {
 		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
 	}
 	
-	@PutMapping("review/{reviewId}")
+	@PutMapping("{memberId}/review/{reviewId}")
 	public ApiResponse<String> modify(@PathVariable String memberId, @PathVariable long reviewId, ReviewUpdateRequestDto review, HttpServletRequest req){
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
@@ -300,7 +291,7 @@ public class MemberController {
 		return ApiResponse.fail("fail", ResponseCode.INTERNAL_SERVER_ERROR);
 	}
 	
-	@DeleteMapping("review/{reviewId}")
+	@DeleteMapping("{memberId}/review/{reviewId}")
 	public ApiResponse<String> delete(@PathVariable String memberId,
 											@PathVariable long reviewId,
 											HttpServletRequest req) {
