@@ -6,9 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.MemberDTO;
 import com.example.demo.mapper.MemberMapper;
-
+import com.example.demo.domain.MemberDTO;
 import com.example.demo.dto.MemberInfoResponseDto;
 import com.example.demo.dto.MemberProfileResponseDto;
 import com.example.demo.dto.MemberUpdateRequestDto;

@@ -2,7 +2,7 @@ package com.example.demo.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.demo.dto.MemberDTO;
+import com.example.demo.domain.MemberDTO;
 
 @Mapper
 public interface MemberMapper {

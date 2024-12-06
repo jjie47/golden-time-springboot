@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.dto.MemberDTO;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.MemberServiceImpl;
 import com.example.demo.service.provider.EmailProvider;
@@ -32,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.domain.MemberDTO;
 import com.example.demo.dto.MemberInfoResponseDto;
 import com.example.demo.dto.MemberProfileResponseDto;
 import com.example.demo.dto.MemberUpdateRequestDto;

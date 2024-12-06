@@ -2,7 +2,7 @@ package com.example.demo.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.demo.dto.FavoriteDTO;
+import com.example.demo.domain.FavoriteDTO;
 
 @Mapper
 public interface FavoriteMapper {
