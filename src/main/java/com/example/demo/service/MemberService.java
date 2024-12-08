@@ -18,6 +18,7 @@ public class MemberService {
 	@Autowired
 	private MemberMapper mMapper;
 	
+	// 로그인
 	public boolean login(String memberId, String password) {
 		MemberDTO member = mMapper.getMemberByMemberId(memberId);
 		if(member != null) {
@@ -45,7 +46,7 @@ public class MemberService {
 	    return certificationNumber.toString();
 	}
 	
-	// 로그인
+	// 회원가입
 	public boolean join(MemberDTO member) {
 		return mMapper.insertMember(member) == 1;
 	}

@@ -12,7 +12,6 @@ public class HospitalService {
 	@Autowired
 	private FavoriteMapper fMapper;
 	
-	
 	// 즐겨찾기 존재여부 확인
 	public boolean checkFavorite(FavoriteDTO favoriteData) {
         int count = fMapper.checkFavorite(favoriteData);
@@ -24,11 +23,11 @@ public class HospitalService {
 		// 병원 존재여부 확인
 		boolean check = fMapper.checkHospital(favoriteData.getDutyId());
 		if(check) {
-			System.out.println("병원있음(즐겨찾기추가)");
+//			System.out.println("병원있음(즐겨찾기추가)");
 			fMapper.insertLike(favoriteData);
 		}
 		else {
-			System.out.println("병원없음(기관추가,즐겨찾기추가)");
+//			System.out.println("병원없음(기관추가,즐겨찾기추가)");
 			fMapper.insertDuty(favoriteData);
 			fMapper.insertLike(favoriteData);
 		}

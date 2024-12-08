@@ -67,11 +67,10 @@ public class MemberController {
 	//아이디 중복확인
 	@GetMapping("checkId")
 	public ResponseEntity<String> checkId(@RequestParam String memberId) {
-		System.out.println(memberId);
+//		System.out.println(memberId);
 		if(service.checkId(memberId)) {
 			return new ResponseEntity<String>("O",HttpStatus.OK);
-		}
-		else {
+		} else {
 			return new ResponseEntity<String>("X",HttpStatus.OK);			
 		}
 	}
@@ -102,8 +101,7 @@ public class MemberController {
 		
 		if(memberMailNumber != null && certificationNumber.equals(memberMailNumber)) {
 			return new ResponseEntity<String>("O",HttpStatus.OK);
-		}
-		else {
+		} else {
 			return new ResponseEntity<String>("X",HttpStatus.OK);			
 		}
 	}
@@ -112,15 +110,14 @@ public class MemberController {
 	@PostMapping("join")
     public ResponseEntity<String> join(@RequestBody MemberDTO memberData, HttpServletResponse resp) {
         // 데이터 처리 로직
-        System.out.println("MemberDTO: " + memberData);
+//        System.out.println("MemberDTO: " + memberData);
         if(service.join(memberData)) {
         	Cookie cookie = new Cookie("joinId",memberData.getMemberId());
         	cookie.setPath("/");
         	cookie.setMaxAge(30);
         	resp.addCookie(cookie);
         	return new ResponseEntity<String>("O",HttpStatus.OK);
-        }
-        else {
+        } else {
         	return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -157,8 +154,7 @@ public class MemberController {
         	cookie.setMaxAge(30);
         	resp.addCookie(cookie);
 			return new ResponseEntity<String>(result.getMemberId(),HttpStatus.OK);
-		}
-		else {
+		} else {
 			return new ResponseEntity<String>("X",HttpStatus.OK);
 		}
 	}
@@ -176,8 +172,7 @@ public class MemberController {
 		MemberDTO result = service.checkPhoneAndMail(memberData);
 		if(result != null) {
 			return new ResponseEntity<String>("O",HttpStatus.OK);
-		}
-		else {
+		} else {
 			return new ResponseEntity<String>("X",HttpStatus.OK);			
 		}
 	}
@@ -194,8 +189,7 @@ public class MemberController {
         	cookie.setMaxAge(30);
         	resp.addCookie(cookie);
 			return new ResponseEntity<String>("O",HttpStatus.OK);
-		}
-		else {
+		} else {
 			return new ResponseEntity<String>("X",HttpStatus.OK);			
 		}
 	}
