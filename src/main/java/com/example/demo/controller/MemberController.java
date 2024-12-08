@@ -56,6 +56,7 @@ public class MemberController {
 	@Autowired
 	private ReviewService rService;
 	
+	@Autowired
     private HttpSession session;
 	
 	@Autowired
@@ -74,7 +75,6 @@ public class MemberController {
 			return new ResponseEntity<String>("X",HttpStatus.OK);			
 		}
 	}
-
 	
 	// 인증번호 발송
 	@PostMapping("sendMailCertificationNumber")
@@ -82,6 +82,7 @@ public class MemberController {
 		String certificationNumber = service.getCertificationNumber();
 		session.setAttribute("certificationNumber", certificationNumber);
 
+		System.out.println("메일: " + email);
 		System.out.println("인증번호: " + certificationNumber);
 //		boolean result = emailProvider.sendCertificationMail(email, certificationNumber);
 
@@ -91,7 +92,6 @@ public class MemberController {
             return new ResponseEntity<String>("메일발송에 실패했습니다.",HttpStatus.OK);
         }
 	}
-	
 	
 	// 인증번호 확인
 	@PostMapping("certificationNumberCheck")
@@ -108,8 +108,7 @@ public class MemberController {
 		}
 	}
 	
-	
-	// 회원가입 Submit
+	// 회원가입
 	@PostMapping("join")
     public ResponseEntity<String> join(@RequestBody MemberDTO memberData, HttpServletResponse resp) {
         // 데이터 처리 로직
@@ -117,7 +116,7 @@ public class MemberController {
         if(service.join(memberData)) {
         	Cookie cookie = new Cookie("joinId",memberData.getMemberId());
         	cookie.setPath("/");
-        	cookie.setMaxAge(120);
+        	cookie.setMaxAge(30);
         	resp.addCookie(cookie);
         	return new ResponseEntity<String>("O",HttpStatus.OK);
         }
@@ -126,8 +125,7 @@ public class MemberController {
         }
     }
 	
-	
-	// 로그인 Submit
+	// 로그인
 	@PostMapping("login")
 	public ResponseEntity<String> login(@RequestBody Map<String, String> data, HttpServletRequest req) {
 		String memberId = data.get("memberId");
@@ -139,7 +137,6 @@ public class MemberController {
 	    }
 	    return new ResponseEntity<String>("X", HttpStatus.OK);
 	}
-
 	
 	// 로그아웃
 	@GetMapping("logout")
@@ -147,18 +144,64 @@ public class MemberController {
 		req.getSession().invalidate();
 		return new ResponseEntity<String>("O",HttpStatus.OK);
 	}
-    
-
-
-
-
 	
-	@PostMapping("login")
-	public ResponseEntity<String> login(@RequestBody Member member, HttpServletRequest req) {
-		HttpSession session = req.getSession();
-		session.setAttribute("loginMember", member.getMemberId());
-		return new ResponseEntity<String>("O", HttpStatus.OK);
+	// 아이디 찾기
+	@PostMapping("help/IdInquiry")
+	public ResponseEntity<String> idInquiry(@RequestBody MemberDTO memberData, HttpServletResponse resp) {
+		System.out.println("memberData: " + memberData.getPhoneNumber());
+		
+		MemberDTO result = service.checkPhoneAndMail(memberData);
+		if(result != null) {
+			Cookie cookie = new Cookie("joinId",result.getMemberId());
+        	cookie.setPath("/");
+        	cookie.setMaxAge(30);
+        	resp.addCookie(cookie);
+			return new ResponseEntity<String>(result.getMemberId(),HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<String>("X",HttpStatus.OK);
+		}
 	}
+	
+	// 비밀번호 찾기
+	@PostMapping("help/PwInquiry")
+	public ResponseEntity<String> pwInquiry(@RequestBody MemberDTO memberData) {
+		System.out.println("memberData: " + memberData.getMemberId());
+		System.out.println(service.checkId(memberData.getMemberId()));
+		if(service.checkId(memberData.getMemberId())) {
+			System.out.println("아이디 없음");
+			return new ResponseEntity<String>("등록된 아이디가 없습니다.",HttpStatus.OK);
+		}
+		
+		MemberDTO result = service.checkPhoneAndMail(memberData);
+		if(result != null) {
+			return new ResponseEntity<String>("O",HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<String>("X",HttpStatus.OK);			
+		}
+	}
+	
+	// 비밀번호 변경
+	@PostMapping("help/PwResetting")
+	public ResponseEntity<String> PwResetting(@RequestBody MemberDTO memberData, HttpServletResponse resp) {
+		System.out.println("memberData: " + memberData.getPhoneNumber());
+		
+		boolean result = service.updatePwByMemberId(memberData);
+		if(result) {
+			Cookie cookie = new Cookie("joinId",memberData.getMemberId());
+        	cookie.setPath("/");
+        	cookie.setMaxAge(30);
+        	resp.addCookie(cookie);
+			return new ResponseEntity<String>("O",HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<String>("X",HttpStatus.OK);			
+		}
+	}
+	
+	
+
 	
 	@GetMapping("session")
 	public ApiResponse<String> get(HttpServletRequest req) {
