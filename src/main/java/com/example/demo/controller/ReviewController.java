@@ -54,7 +54,7 @@ public class ReviewController {
 	public ResponseEntity<String> writeReview(@RequestBody ReviewWriteDTO rv) {
 		
 		//임시로 설정해준 id 와 별점
-		String memberId = "apple";
+		String memberId = "apple123";
 		
 		//임시로 설정해준 id 와 별점 DTO에 넣어줌
 		rv.setMemberId(memberId);
