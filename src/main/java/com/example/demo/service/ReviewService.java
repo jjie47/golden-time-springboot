@@ -27,6 +27,10 @@ public interface ReviewService {
 	List<ReviewListResponseDto> getList(String memberId, String classification);
 	boolean update(ReviewUpdateRequestDto review);
 	boolean delete(long reviewId);
+
+
+	String getNickName(String memberId);
+
 	
 	// 병원 리뷰 등록
 	boolean writeHospitalReview(Map<String, Object> sendData);

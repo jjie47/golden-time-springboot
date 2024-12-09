@@ -91,6 +91,12 @@ public class ReviewServiceImpl implements ReviewService{
 			reviewMapper.writeReview(rv);
 		}
 	}
+	
+	@Override
+	public String getNickName(String memberId) {
+		String nick = reviewMapper.getNickName(memberId);
+		return nick;
+	}
 		
 	
 	

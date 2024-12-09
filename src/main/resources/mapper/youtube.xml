@@ -8,6 +8,7 @@
             reference
         FROM
             clip_solution
+        ORDER BY clip_id DESC
         LIMIT #{size} OFFSET #{offset}
     </select>
     

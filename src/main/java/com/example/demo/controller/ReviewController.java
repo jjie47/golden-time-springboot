@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.domain.MemberDTO;
 import com.example.demo.domain.PharmListDTO;
 import com.example.demo.domain.PharmReviewDTO;
 import com.example.demo.domain.ReviewDTO;
@@ -50,16 +51,9 @@ public class ReviewController {
 		return new ResponseEntity<>(reviews, HttpStatus.OK);
 	}
 
-	@PostMapping("/write")
+	@PostMapping("write")
 	public ResponseEntity<String> writeReview(@RequestBody ReviewWriteDTO rv) {
 		
-		//임시로 설정해준 id 와 별점
-		String memberId = "apple123";
-		
-		//임시로 설정해준 id 와 별점 DTO에 넣어줌
-		rv.setMemberId(memberId);
-	    
-	    
 	    //약국 값은 기본으로 넣어줌, 병원의 경우 외과 안과 이런거 받아서 넣어야함
 	    String classification = "약국";
 	    rv.setClassification(classification);
@@ -74,6 +68,15 @@ public class ReviewController {
 		return ResponseEntity.ok("리뷰 등록 성공");
 	}
 	
+
+	@GetMapping("getnickname")
+	public ResponseEntity<String> getNickName(@RequestParam String memberId) {      
+
+		String nick = service.getNickName(memberId);
+
+		return new ResponseEntity<>(nick, HttpStatus.OK);
+	}
+
 	
 	
 	// 병원 리뷰 등록
@@ -122,4 +125,5 @@ public class ReviewController {
 	
 	
 	
+
 }
