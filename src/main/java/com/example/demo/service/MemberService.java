@@ -18,6 +18,7 @@ public class MemberService {
 	@Autowired
 	private MemberMapper mMapper;
 	
+	// 로그인
 	public boolean login(String memberId, String password) {
 		MemberDTO member = mMapper.getMemberByMemberId(memberId);
 		if(member != null) {
@@ -28,13 +29,11 @@ public class MemberService {
 		return false;
 	}
 
-	
 	// 아이디 중복 확인
 	public boolean checkId(String memberId) {
 		MemberDTO member = mMapper.getMemberByMemberId(memberId);
 		return member == null;
 	}
-	
 	
 	// 랜덤 번호 생성
 	public String getCertificationNumber() {
@@ -47,9 +46,20 @@ public class MemberService {
 	    return certificationNumber.toString();
 	}
 	
-	
+	// 회원가입
 	public boolean join(MemberDTO member) {
 		return mMapper.insertMember(member) == 1;
+	}
+
+	// 아이디 찾기 & 비밀번호 찾기
+	public MemberDTO checkPhoneAndMail(MemberDTO memberData) {
+		MemberDTO member = mMapper.getMemberByPhoneAndMail(memberData);
+		return member;
+	}
+
+	// 비밀번호 변경
+	public boolean updatePwByMemberId(MemberDTO memberData) {
+		return mMapper.updatePwByMemberId(memberData) == 1;
 	}
 
 }

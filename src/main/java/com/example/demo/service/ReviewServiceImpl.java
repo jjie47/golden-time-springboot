@@ -3,27 +3,33 @@ package com.example.demo.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.domain.DutyDTO;
 import com.example.demo.domain.PharmListDTO;
 import com.example.demo.domain.PharmReviewDTO;
+import com.example.demo.domain.ReviewDTO;
 import com.example.demo.domain.ReviewWriteDTO;
 import com.example.demo.dto.ReviewListResponseDto;
 import com.example.demo.dto.ReviewUpdateRequestDto;
 import com.example.demo.entity.Review;
+import com.example.demo.mapper.FavoriteMapper;
 import com.example.demo.mapper.ReviewMapper;
+import com.example.demo.mapper.DutyMapper;
 import com.example.demo.repository.ReviewRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
-@Service
 @Transactional
+@Service
 public class ReviewServiceImpl implements ReviewService{
 	
 	@Autowired
@@ -136,4 +142,46 @@ public class ReviewServiceImpl implements ReviewService{
 		// TODO : 예외 처리(존재하지 않는 즐겨찾기)
 		return false;
 	}
+	
+	
+	
+	@Autowired
+	private FavoriteMapper fMapper;
+	@Autowired
+	private ReviewMapper rMapper;
+	@Autowired
+	private DutyMapper dMapper;
+	
+	//병원 리뷰 등록
+	@Override
+	public boolean writeHospitalReview(Map<String, Object> sendData) {
+		// JSON 데이터를 개별적으로 파싱
+        ObjectMapper mapper = new ObjectMapper();
+
+        ReviewDTO reviewData = mapper.convertValue(sendData.get("reviewData"), ReviewDTO.class);
+        DutyDTO dutyData = mapper.convertValue(sendData.get("dutyData"), DutyDTO.class);
+        
+        System.out.println("reviewData:" + reviewData);
+        System.out.println("dutyData:" + dutyData);
+        System.out.println("dutyData.getDutyId():" + dutyData.getDutyId());
+        
+        
+        boolean check = fMapper.checkHospital(dutyData.getDutyId());
+		// 병원 존재여부 확인
+		if(check) {
+			rMapper.insertReview(reviewData);
+		}
+		else {
+			dMapper.insertDuty(dutyData);
+			rMapper.insertReview(reviewData);
+		}
+		return true;
+	}
+	
+	// 병원ID에 해당하는 리뷰 목록 조회
+	@Override
+    public List<ReviewDTO> getReviewsByDutyId(String dutyId) {
+        return rMapper.getReviewsByDutyId(dutyId);
+    }
+	
 }

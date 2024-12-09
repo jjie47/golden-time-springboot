@@ -1,16 +1,14 @@
 package com.example.demo.mapper;
 
-
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.domain.MemberDTO;
 import com.example.demo.domain.PharmListDTO;
 import com.example.demo.domain.PharmReviewDTO;
+import com.example.demo.domain.ReviewDTO;
 import com.example.demo.domain.ReviewWriteDTO;
 
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ReviewMapper {
@@ -26,5 +24,12 @@ public interface ReviewMapper {
 	void insertPharm(ReviewWriteDTO rv);
 
 	String getNickName(String memberid);
+	
+	int insertMember(MemberDTO member);
+
+	// 병원 리뷰작성
+	int insertReview(ReviewDTO reviewData);
+	// 병원ID에 해당하는 리뷰 목록 조회
+    List<ReviewDTO> getReviewsByDutyId(String dutyId);
 	
 }
