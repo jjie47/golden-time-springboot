@@ -141,7 +141,7 @@ public class MemberController {
 		req.getSession().invalidate();
 		return new ResponseEntity<String>("O",HttpStatus.OK);
 	}
-	
+
 	// 아이디 찾기
 	@PostMapping("help/IdInquiry")
 	public ResponseEntity<String> idInquiry(@RequestBody MemberDTO memberData, HttpServletResponse resp) {
@@ -158,7 +158,7 @@ public class MemberController {
 			return new ResponseEntity<String>("X",HttpStatus.OK);
 		}
 	}
-	
+
 	// 비밀번호 찾기
 	@PostMapping("help/PwInquiry")
 	public ResponseEntity<String> pwInquiry(@RequestBody MemberDTO memberData) {
@@ -271,7 +271,7 @@ public class MemberController {
 		return ApiResponse.fail("fail", ResponseCode.INTERNAL_SERVER_ERROR);
 	}
 	
-	@GetMapping("reviews")
+	@GetMapping("{memberId}/reviews")
 	public ApiResponse<List<ReviewListResponseDto>> getlist(@PathVariable String memberId, HttpServletRequest req) {
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
@@ -287,7 +287,7 @@ public class MemberController {
 		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
 	}
 	
-	@GetMapping("reviews/month")
+	@GetMapping("{memberId}/reviews/month")
 	public ApiResponse<List<ReviewListResponseDto>> getlist(@PathVariable String memberId, @RequestParam int month, HttpServletRequest req) {
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
@@ -303,7 +303,7 @@ public class MemberController {
 		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
 	}
 	
-	@GetMapping("reviews/classification")
+	@GetMapping("{memberId}/reviews/classification")
 	public ApiResponse<List<ReviewListResponseDto>> getlist(@PathVariable String memberId,
 													@RequestParam String classification,
 													HttpServletRequest req) {
@@ -321,7 +321,7 @@ public class MemberController {
 		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
 	}
 	
-	@PutMapping("review/{reviewId}")
+	@PutMapping("{memberId}/review/{reviewId}")
 	public ApiResponse<String> modify(@PathVariable String memberId, @PathVariable long reviewId, ReviewUpdateRequestDto review, HttpServletRequest req){
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
@@ -337,7 +337,7 @@ public class MemberController {
 		return ApiResponse.fail("fail", ResponseCode.INTERNAL_SERVER_ERROR);
 	}
 	
-	@DeleteMapping("review/{reviewId}")
+	@DeleteMapping("{memberId}/review/{reviewId}")
 	public ApiResponse<String> delete(@PathVariable String memberId,
 											@PathVariable long reviewId,
 											HttpServletRequest req) {
