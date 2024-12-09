@@ -69,7 +69,7 @@ public class LikeRepositoryTest {
 	
 //	@Test
 	void findAllByMember_MemberId() {
-		List<Like> expected = likeRepository.findAllByMember_MemberId("testId");
+		List<Like> expected = likeRepository.findAllByMember_MemberIdOrderByLikeIdDesc("testId");
 		for(Like data: expected) {
 			System.out.println(data);
 		}
@@ -77,7 +77,7 @@ public class LikeRepositoryTest {
 	
 //	@Test
 	void findAllByMember_MemberIdWithLimit() {
-		List<Like> expected = likeRepository.findAllByMember_MemberId("testId", Limit.of(3));
+		List<Like> expected = likeRepository.findAllByMember_MemberIdOrderByLikeIdDesc("testId", Limit.of(3));
 		for(Like data: expected) {
 			System.out.println(data);
 		}
@@ -85,7 +85,7 @@ public class LikeRepositoryTest {
 	
 //	@Test
 	void findAllByMember_MemberIdAndClassification() {
-		List<Like> expected = likeRepository.findAllByMember_MemberIdAndClassification("testId", "약국");
+		List<Like> expected = likeRepository.findAllByMember_MemberIdAndClassificationOrderByLikeIdDesc("testId", "약국");
 		for(Like data: expected) {
 			System.out.println(data);
 		}

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.demo.dto.ReviewListResponseDto;
+import com.example.demo.dto.ReviewItemDto;
 import com.example.demo.dto.ReviewUpdateRequestDto;
 import com.example.demo.entity.Duty;
 import com.example.demo.entity.Like;
@@ -79,32 +79,32 @@ public class ReviewServiceImplTest {
 		rlist.add(new Review("내용6", 5, "약국", new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234"), new Duty("a1234", "문선치과", "치과", "02-3023-0333")));
 		reviewRepository.saveAll(rlist);
 		
-		List<ReviewListResponseDto> before = reviewService.getList("testId");
-		for(ReviewListResponseDto data: before) {
+		List<ReviewItemDto> before = reviewService.getList("testId");
+		for(ReviewItemDto data: before) {
 			System.out.println(data);
 		}
 	}
 	
 //	@Test
 	void getListByMemberId() {
-		List<ReviewListResponseDto> expected = reviewService.getList("testId");
-		for(ReviewListResponseDto data: expected) {
+		List<ReviewItemDto> expected = reviewService.getList("testId");
+		for(ReviewItemDto data: expected) {
 			System.out.println(data);
 		}
 	}
 	
 //	@Test
 	void getListByMemberIdWithLimit() {
-		List<ReviewListResponseDto> expected = reviewService.getList("testId", 1);
-		for(ReviewListResponseDto data: expected) {
+		List<ReviewItemDto> expected = reviewService.getList("testId", 1);
+		for(ReviewItemDto data: expected) {
 			System.out.println(data);
 		}
 	}
 	
 //	@Test
 	void getListByMemberIdAndClassification() {
-		List<ReviewListResponseDto> expected = reviewService.getList("testId", "약국");
-		for(ReviewListResponseDto data: expected) {
+		List<ReviewItemDto> expected = reviewService.getList("testId", "약국");
+		for(ReviewItemDto data: expected) {
 			System.out.println(data);
 		}
 	}
@@ -114,8 +114,8 @@ public class ReviewServiceImplTest {
 		ReviewUpdateRequestDto review = new ReviewUpdateRequestDto(6, "1234", 3, "testId");
 		if(reviewService.update(review)) {
 			System.out.println("변경 성공");
-			List<ReviewListResponseDto> expected = reviewService.getList("testId");
-			for(ReviewListResponseDto data: expected) {
+			List<ReviewItemDto> expected = reviewService.getList("testId");
+			for(ReviewItemDto data: expected) {
 				System.out.println(data);
 			}
 		}
@@ -129,8 +129,8 @@ public class ReviewServiceImplTest {
 	void delete() {
 		if(reviewService.delete(6)) {
 			System.out.println("삭제 성공");
-			List<ReviewListResponseDto> expected = reviewService.getList("testId");
-			for(ReviewListResponseDto data: expected) {
+			List<ReviewItemDto> expected = reviewService.getList("testId");
+			for(ReviewItemDto data: expected) {
 				System.out.println(data);
 			}
 		}

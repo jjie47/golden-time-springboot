@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.DutyDTO;
@@ -16,6 +18,7 @@ import com.example.demo.domain.PharmReviewDTO;
 import com.example.demo.domain.ReviewDTO;
 import com.example.demo.domain.ReviewWriteDTO;
 import com.example.demo.dto.ReviewListResponseDto;
+import com.example.demo.dto.ReviewItemDto;
 import com.example.demo.dto.ReviewUpdateRequestDto;
 import com.example.demo.entity.Review;
 import com.example.demo.mapper.FavoriteMapper;
@@ -105,23 +108,68 @@ public class ReviewServiceImpl implements ReviewService{
 		
 	
 	@Override
-	public List<ReviewListResponseDto> getList(String memberId) {
-		return reviewRepository.findAllByMember_MemberId(memberId).stream()
-				.map(ReviewListResponseDto::toDto)
+	public List<ReviewItemDto> getList(String memberId) {
+		return reviewRepository.findAllByMember_MemberIdOrderByUpdatedAtDesc(memberId).stream()
+				.map(ReviewItemDto::toDto)
 				.collect(Collectors.toList());
 	}
 	@Override
-	public List<ReviewListResponseDto> getList(String memberId, int month) {
-		LocalDateTime date = LocalDateTime.now().minusMonths(month);
-		return reviewRepository.findAllByMember_MemberIdAndUpdatedAtGreaterThanEqualMonths(memberId, date).stream()
-				.map(ReviewListResponseDto::toDto)
+	public List<ReviewItemDto> getList(String memberId, int month) {
+		LocalDateTime date = (month > 0)?LocalDateTime.now().minusMonths(month):LocalDateTime.now().minusDays(1);
+		return reviewRepository.findAllByMember_MemberIdAndUpdatedAtGreaterThanEqualOrderByUpdatedAtDesc(memberId, date).stream()
+				.map(ReviewItemDto::toDto)
 				.collect(Collectors.toList());
 	}
 	@Override
-	public List<ReviewListResponseDto> getList(String memberId, String classification) {
-		return reviewRepository.findAllByMember_MemberIdAndClassification(memberId, classification).stream()
-				.map(ReviewListResponseDto::toDto)
+	public List<ReviewItemDto> getList(String memberId, String classification) {
+		return reviewRepository.findAllByMember_MemberIdAndClassificationOrderByUpdatedAtDesc(memberId, classification).stream()
+				.map(ReviewItemDto::toDto)
 				.collect(Collectors.toList());
+	}
+	@Override
+	public List<ReviewItemDto> getList(String memberId, int month, String classification) {
+		LocalDateTime date = (month > 0)?LocalDateTime.now().minusMonths(month):LocalDateTime.now().minusDays(1);
+		return reviewRepository.findAllByMember_MemberIdAndUpdatedAtGreaterThanEqualAndClassificationOrderByUpdatedAtDesc(memberId, date, classification).stream()
+				.map(ReviewItemDto::toDto)
+				.collect(Collectors.toList());
+	}
+	@Override
+	public ReviewListResponseDto getList(String memberId, int pageNo, int numOfRows) {
+		Pageable pageable = PageRequest.of(pageNo-1, numOfRows);
+		List<ReviewItemDto> items = reviewRepository.findAllByMember_MemberIdOrderByUpdatedAtDesc(memberId, pageable).stream()
+				.map(ReviewItemDto::toDto)
+				.collect(Collectors.toList());
+		long totalCount = reviewRepository.countByMember_MemberId(memberId);
+		return new ReviewListResponseDto(items, pageNo, numOfRows, totalCount);
+	}
+	@Override
+	public ReviewListResponseDto getList(String memberId, int month, int pageNo, int numOfRows) {
+		Pageable pageable = PageRequest.of(pageNo-1, numOfRows);
+		LocalDateTime date = (month > 0)?LocalDateTime.now().minusMonths(month):LocalDateTime.now().minusDays(1);
+		List<ReviewItemDto> items = reviewRepository.findAllByMember_MemberIdAndUpdatedAtGreaterThanEqualOrderByUpdatedAtDesc(memberId, date, pageable).stream()
+				.map(ReviewItemDto::toDto)
+				.collect(Collectors.toList());
+		long totalCount = reviewRepository.countByMember_MemberIdAndUpdatedAtGreaterThanEqual(memberId, date);
+		return new ReviewListResponseDto(items, pageNo, numOfRows, totalCount);
+	}
+	@Override
+	public ReviewListResponseDto getList(String memberId, String classification, int pageNo, int numOfRows) {
+		Pageable pageable = PageRequest.of(pageNo-1, numOfRows);
+		List<ReviewItemDto> items = reviewRepository.findAllByMember_MemberIdAndClassificationOrderByUpdatedAtDesc(memberId, classification, pageable).stream()
+				.map(ReviewItemDto::toDto)
+				.collect(Collectors.toList());
+		long totalCount = reviewRepository.countByMember_MemberIdAndClassification(memberId, classification);
+		return new ReviewListResponseDto(items, pageNo, numOfRows, totalCount);
+	}
+	@Override
+	public ReviewListResponseDto getList(String memberId, int month, String classification, int pageNo, int numOfRows) {
+		Pageable pageable = PageRequest.of(pageNo-1, numOfRows);
+		LocalDateTime date = (month > 0)?LocalDateTime.now().minusMonths(month):LocalDateTime.now().minusDays(1);
+		List<ReviewItemDto> items = reviewRepository.findAllByMember_MemberIdAndUpdatedAtGreaterThanEqualAndClassificationOrderByUpdatedAtDesc(memberId, date, classification, pageable).stream()
+				.map(ReviewItemDto::toDto)
+				.collect(Collectors.toList());
+		long totalCount = reviewRepository.countByMember_MemberIdAndClassification(memberId, classification);
+		return new ReviewListResponseDto(items, pageNo, numOfRows, totalCount);
 	}
 	@Override
 	public boolean update(ReviewUpdateRequestDto review) {

@@ -54,6 +54,12 @@ public class ReviewController {
 	@PostMapping("write")
 	public ResponseEntity<String> writeReview(@RequestBody ReviewWriteDTO rv) {
 		
+		//임시로 설정해준 id 와 별점
+		String memberId = "apple123";
+		
+		//임시로 설정해준 id 와 별점 DTO에 넣어줌
+		rv.setMemberId(memberId);
+
 	    //약국 값은 기본으로 넣어줌, 병원의 경우 외과 안과 이런거 받아서 넣어야함
 	    String classification = "약국";
 	    rv.setClassification(classification);

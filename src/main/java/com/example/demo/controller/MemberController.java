@@ -1,10 +1,24 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.service.MemberService;
+import com.example.demo.service.MemberServiceImpl;
+import com.example.demo.service.provider.EmailProvider;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,11 +30,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.domain.MemberDTO;
 import com.example.demo.dto.MemberInfoResponseDto;
 import com.example.demo.dto.MemberProfileResponseDto;
 import com.example.demo.dto.MemberUpdateRequestDto;
+import com.example.demo.dto.ReviewItemDto;
 import com.example.demo.dto.ReviewListResponseDto;
 import com.example.demo.dto.ReviewUpdateRequestDto;
 import com.example.demo.entity.Member;
@@ -74,9 +90,9 @@ public class MemberController {
 
 		System.out.println("메일: " + email);
 		System.out.println("인증번호: " + certificationNumber);
-//		boolean result = emailProvider.sendCertificationMail(email, certificationNumber);
+		boolean result = emailProvider.sendCertificationMail(email, certificationNumber);
 
-        if (true) {
+        if (result) {
             return new ResponseEntity<String>("인증메일이 발송되었습니다.",HttpStatus.OK);
         } else {
             return new ResponseEntity<String>("메일발송에 실패했습니다.",HttpStatus.OK);
@@ -186,8 +202,6 @@ public class MemberController {
 		}
 	}
 	
-	
-
 
 	
 	@GetMapping("session")
@@ -231,8 +245,32 @@ public class MemberController {
 		return ApiResponse.fail(null, ResponseCode.MEMBER_NOT_FOUND);
 	}
 	
+	@GetMapping("{memberId}/profile-image/{systemName}")
+	public ResponseEntity<Resource> getProfile(@PathVariable String memberId,
+															@PathVariable String systemName,
+															HttpServletRequest req) throws Exception{
+		String loginMember = (String)req.getSession().getAttribute("loginMember");
+		if(loginMember==null) {
+			return new ResponseEntity<Resource>(null, null, HttpStatus.UNAUTHORIZED);
+		}
+		if(!loginMember.equals(memberId)) {
+			return new ResponseEntity<Resource>(null, null, HttpStatus.FORBIDDEN);
+		}
+		HashMap<String, Object> datas = mService.getProfileImage(systemName);
+		String contentType = (String)datas.get("contentType");
+		Resource resource = (Resource)datas.get("resource");
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_TYPE, contentType);		
+		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
+	}
+	
 	@PutMapping("{memberId}")
-	public ApiResponse<String> modify(@PathVariable String memberId, @RequestBody MemberUpdateRequestDto member, HttpServletRequest req){
+	public ApiResponse<String> modify(@PathVariable String memberId,
+										MemberUpdateRequestDto member,
+										MultipartFile file,
+										String deleteFile,
+										HttpServletRequest req) throws Exception{
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
 			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
@@ -240,8 +278,10 @@ public class MemberController {
 		if(!loginMember.equals(memberId)) {
 			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
 		}
+		System.out.println(file);
+		System.out.println(deleteFile);
 		member.setMemberId(memberId);
-		if(mService.update(member)) {
+		if(mService.update(member, file, deleteFile)) {
 			return ApiResponse.success("success", ResponseCode.MEMBER_UPDATE_SUCCESS);
 		}
 		return ApiResponse.fail("fail", ResponseCode.INTERNAL_SERVER_ERROR);
@@ -265,40 +305,9 @@ public class MemberController {
 	}
 	
 	@GetMapping("{memberId}/reviews")
-	public ApiResponse<List<ReviewListResponseDto>> getlist(@PathVariable String memberId, HttpServletRequest req) {
-		String loginMember = (String)req.getSession().getAttribute("loginMember");
-		if(loginMember==null) {
-			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
-		}
-		if(!loginMember.equals(memberId)) {
-			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
-		}
-		List<ReviewListResponseDto> list = rService.getList(loginMember);
-		if(list!=null) {
-			return ApiResponse.success(list, ResponseCode.REVIEWS_GET_SUCCESS);
-		}
-		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
-	}
-	
-	@GetMapping("{memberId}/reviews/month")
-	public ApiResponse<List<ReviewListResponseDto>> getlist(@PathVariable String memberId, @RequestParam int month, HttpServletRequest req) {
-		String loginMember = (String)req.getSession().getAttribute("loginMember");
-		if(loginMember==null) {
-			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
-		}
-		if(!loginMember.equals(memberId)) {
-			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
-		}
-		List<ReviewListResponseDto> list = rService.getList(loginMember, month);
-		if(list!=null) {
-			return ApiResponse.success(list, ResponseCode.REVIEWS_GET_SUCCESS);
-		}
-		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
-	}
-	
-	@GetMapping("{memberId}/reviews/classification")
-	public ApiResponse<List<ReviewListResponseDto>> getlist(@PathVariable String memberId,
-													@RequestParam String classification,
+	public ApiResponse<ReviewListResponseDto> getList(@PathVariable String memberId,
+													@RequestParam int pageNo,
+													@RequestParam int numOfRows,
 													HttpServletRequest req) {
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
@@ -307,7 +316,86 @@ public class MemberController {
 		if(!loginMember.equals(memberId)) {
 			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
 		}
-		List<ReviewListResponseDto> list = rService.getList(loginMember, classification);
+		ReviewListResponseDto list = rService.getList(loginMember, pageNo, numOfRows);
+		if(list!=null) {
+			return ApiResponse.success(list, ResponseCode.REVIEWS_GET_SUCCESS);
+		}
+		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
+	}
+	
+	@GetMapping("{memberId}/reviews/month")
+	public ApiResponse<List<ReviewItemDto>> getList(@PathVariable String memberId,
+													@RequestParam int month,
+													HttpServletRequest req) {
+		String loginMember = (String)req.getSession().getAttribute("loginMember");
+		if(loginMember==null) {
+			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
+		}
+		if(!loginMember.equals(memberId)) {
+			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
+		}
+		List<ReviewItemDto> list = rService.getList(loginMember, month);
+		if(list!=null) {
+			return ApiResponse.success(list, ResponseCode.REVIEWS_GET_SUCCESS);
+		}
+		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
+	}
+	
+	@GetMapping("{memberId}/reviews/months")
+	public ApiResponse<ReviewListResponseDto> getList(@PathVariable String memberId,
+													@RequestParam int month,
+													@RequestParam int pageNo,
+													@RequestParam int numOfRows,
+													HttpServletRequest req) {
+		String loginMember = (String)req.getSession().getAttribute("loginMember");
+		if(loginMember==null) {
+			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
+		}
+		if(!loginMember.equals(memberId)) {
+			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
+		}
+		ReviewListResponseDto list = rService.getList(loginMember, month, pageNo, numOfRows);
+		if(list!=null) {
+			return ApiResponse.success(list, ResponseCode.REVIEWS_GET_SUCCESS);
+		}
+		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
+	}
+	
+	@GetMapping("{memberId}/reviews/classification")
+	public ApiResponse<ReviewListResponseDto> getList(@PathVariable String memberId,
+													@RequestParam String classification,
+													@RequestParam int pageNo,
+													@RequestParam int numOfRows,
+													HttpServletRequest req) {
+		String loginMember = (String)req.getSession().getAttribute("loginMember");
+		if(loginMember==null) {
+			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
+		}
+		if(!loginMember.equals(memberId)) {
+			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
+		}
+		ReviewListResponseDto list = rService.getList(loginMember, classification, pageNo, numOfRows);
+		if(list!=null) {
+			return ApiResponse.success(list, ResponseCode.REVIEWS_GET_SUCCESS);
+		}
+		return ApiResponse.fail(list, ResponseCode.REVIEWS_NOT_FOUND);
+	}
+	
+	@GetMapping("{memberId}/reviews/conditions")
+	public ApiResponse<ReviewListResponseDto> getList(@PathVariable String memberId,
+													@RequestParam int month,
+													@RequestParam String classification,
+													@RequestParam int pageNo,
+													@RequestParam int numOfRows,
+													HttpServletRequest req) {
+		String loginMember = (String)req.getSession().getAttribute("loginMember");
+		if(loginMember==null) {
+			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
+		}
+		if(!loginMember.equals(memberId)) {
+			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
+		}
+		ReviewListResponseDto list = rService.getList(loginMember, month, classification, pageNo, numOfRows);
 		if(list!=null) {
 			return ApiResponse.success(list, ResponseCode.REVIEWS_GET_SUCCESS);
 		}
@@ -315,7 +403,7 @@ public class MemberController {
 	}
 	
 	@PutMapping("{memberId}/review/{reviewId}")
-	public ApiResponse<String> modify(@PathVariable String memberId, @PathVariable long reviewId, ReviewUpdateRequestDto review, HttpServletRequest req){
+	public ApiResponse<String> modify(@PathVariable String memberId, @PathVariable long reviewId, @RequestBody ReviewUpdateRequestDto review, HttpServletRequest req){
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
 			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);

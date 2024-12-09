@@ -86,7 +86,7 @@ public class ReviewRepositoryTest {
 	
 //	@Test
 	void findAllByMember_MemberId() {
-		List<Review> expected = reviewRepository.findAllByMember_MemberId("testId");
+		List<Review> expected = reviewRepository.findAllByMember_MemberIdOrderByUpdatedAtDesc("testId");
 		for(Review data: expected) {
 			System.out.println(data);
 		}
@@ -94,7 +94,7 @@ public class ReviewRepositoryTest {
 	
 //	@Test
 	void findAllByMember_MemberIdAndClassification() {
-		List<Like> expected = likeRepository.findAllByMember_MemberIdAndClassification("testId", "약국");
+		List<Like> expected = likeRepository.findAllByMember_MemberIdAndClassificationOrderByLikeIdDesc("testId", "약국");
 		for(Like data: expected) {
 			System.out.println(data);
 		}
@@ -103,7 +103,7 @@ public class ReviewRepositoryTest {
 //	@Test
 	void findAllByMember_MemberIdAndUpdatedAtGreaterThanEqualMonths() {
 //		System.out.println(LocalDateTime.now().minusMonths(1).toLocalDate().atStartOfDay());
-		List<Review> expected = reviewRepository.findAllByMember_MemberIdAndUpdatedAtGreaterThanEqualMonths("testId", LocalDateTime.now().minusMonths(1));
+		List<Review> expected = reviewRepository.findAllByMember_MemberIdAndUpdatedAtGreaterThanEqualOrderByUpdatedAtDesc("testId", LocalDateTime.now().minusMonths(1));
 		for(Review data: expected) {
 			System.out.println(data);
 		}

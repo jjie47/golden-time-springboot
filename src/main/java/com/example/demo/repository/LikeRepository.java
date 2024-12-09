@@ -11,11 +11,11 @@ import com.example.demo.entity.Like;
 
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long>{
-	List<Like> findAllByMember_MemberId(String memberId);
-	List<Like> findAllByMember_MemberId(String memberId, Limit limit);
-	List<Like> findAllByMember_MemberId(String memberId, Pageable pageable);
-	List<Like> findAllByMember_MemberIdAndClassification(String memberId, String classification);
-	List<Like> findAllByMember_MemberIdAndClassification(String memberId, String classification, Pageable pageable);
+	List<Like> findAllByMember_MemberIdOrderByLikeIdDesc(String memberId);
+	List<Like> findAllByMember_MemberIdOrderByLikeIdDesc(String memberId, Limit limit);
+	List<Like> findAllByMember_MemberIdOrderByLikeIdDesc(String memberId, Pageable pageable);
+	List<Like> findAllByMember_MemberIdAndClassificationOrderByLikeIdDesc(String memberId, String classification);
+	List<Like> findAllByMember_MemberIdAndClassificationOrderByLikeIdDesc(String memberId, String classification, Pageable pageable);
 	long countByMember_MemberId(String memberId);
 	long countByMember_MemberIdAndClassification(String memberId, String classification);
 }
