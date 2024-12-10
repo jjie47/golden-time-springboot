@@ -34,9 +34,7 @@ public interface ReviewService {
 	boolean update(ReviewUpdateRequestDto review);
 	boolean delete(long reviewId);
 
-
 	String getNickName(String memberId);
-
 	
 	// 병원 리뷰 등록
 	boolean writeHospitalReview(Map<String, Object> sendData);

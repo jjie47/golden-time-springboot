@@ -77,8 +77,8 @@
         SELECT * FROM `review`
         WHERE duty_id = #{dutyId}
     </select>
-    
-    
+
+
     <select id="existsByMemberIdAndDutyId" resultType="boolean" parameterType="map">
         SELECT COUNT(*) > 0
         FROM `like`
@@ -106,5 +106,4 @@
       AND `member_id` = #{memberId}
   </delete>
     
-
 </mapper>

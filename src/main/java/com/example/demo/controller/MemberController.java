@@ -149,8 +149,7 @@ public class MemberController {
 		req.getSession().invalidate();
 		return new ResponseEntity<String>("O",HttpStatus.OK);
 	}
-
-
+	
 	// 아이디 찾기
 	@PostMapping("help/IdInquiry")
 	public ResponseEntity<String> idInquiry(@RequestBody MemberDTO memberData, HttpServletResponse resp) {
@@ -203,7 +202,7 @@ public class MemberController {
 		}
 	}
 	
-
+	
 
 	
 	@GetMapping("session")

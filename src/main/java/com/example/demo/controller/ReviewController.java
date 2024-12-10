@@ -96,8 +96,6 @@ public class ReviewController {
 
 	@PostMapping("write")
 	public ResponseEntity<String> writeReview(@RequestBody ReviewWriteDTO rv) {
-		
-
 	    //약국 값은 기본으로 넣어줌, 병원의 경우 외과 안과 이런거 받아서 넣어야함
 	    String classification = "약국";
 	    rv.setClassification(classification);
@@ -112,7 +110,6 @@ public class ReviewController {
 		return ResponseEntity.ok("리뷰 등록 성공");
 	}
 	
-
 	@GetMapping("getnickname")
 	public ResponseEntity<String> getNickName(@RequestParam String memberId) {      
 
@@ -121,7 +118,6 @@ public class ReviewController {
 		return new ResponseEntity<>(nick, HttpStatus.OK);
 	}
 
-	
 	
 	// 병원 리뷰 등록
 	@PostMapping("writeHospitalReview")
@@ -164,10 +160,5 @@ public class ReviewController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-	
-	
-	
-	
-	
 
 }
