@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.LikeAddAgainRequestDto;
 import com.example.demo.dto.LikeAddRequestDto;
 import com.example.demo.dto.LikeItemDto;
 import com.example.demo.dto.LikeListRequestDto;
@@ -79,8 +78,26 @@ public class LikeController{
 		return ApiResponse.fail(list, ResponseCode.LIKES_NOT_FOUND);
 	}
 	
+	@GetMapping("like")
+	public ApiResponse<Long> getId(@PathVariable String memberId,
+											@RequestParam String dutyId,
+											HttpServletRequest req) {
+		String loginMember = (String)req.getSession().getAttribute("loginMember");
+		if(loginMember==null) {
+			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
+		}
+		if(!loginMember.equals(memberId)) {
+			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
+		}
+		long likeId = service.getId(memberId, dutyId);
+		if(likeId>-1) {
+			return ApiResponse.success(likeId, ResponseCode.LIKE_GET_SUCCESS);
+		}
+		return ApiResponse.fail(-1L, ResponseCode.INTERNAL_SERVER_ERROR);
+	}
+	
 	@PostMapping("like")
-	public ApiResponse<String> regist(@PathVariable String memberId,
+	public ApiResponse<Long> regist(@PathVariable String memberId,
 											@RequestBody LikeAddRequestDto likeReq,
 											HttpServletRequest req) {
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
@@ -90,28 +107,9 @@ public class LikeController{
 		if(!loginMember.equals(memberId)) {
 			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
 		}
-		if(service.insert(likeReq)) {
-			return ApiResponse.success("success", ResponseCode.LIKES_INSERT_SUCCESS);
-		}
-		return ApiResponse.fail("fail", ResponseCode.INTERNAL_SERVER_ERROR);
-	}
-	
-	@PostMapping("like/{likeId}")
-	public ApiResponse<String> regist(@PathVariable String memberId,
-											@PathVariable long likeId,
-											@RequestBody LikeAddAgainRequestDto likeReq,
-											HttpServletRequest req) {
-		String loginMember = (String)req.getSession().getAttribute("loginMember");
-		if(loginMember==null) {
-			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
-		}
-		if(!loginMember.equals(memberId)) {
-			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
-		}
-		if(service.insert(likeReq)) {
-			return ApiResponse.success("success", ResponseCode.LIKES_INSERT_SUCCESS);
-		}
-		return ApiResponse.fail("fail", ResponseCode.INTERNAL_SERVER_ERROR);
+		System.out.println(likeReq);
+		long likeId = service.insert(likeReq);
+		return ApiResponse.success(likeId, ResponseCode.LIKE_INSERT_SUCCESS);
 	}
 	
 	@DeleteMapping("like/{likeId}")
@@ -126,7 +124,7 @@ public class LikeController{
 			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
 		}
 		if(service.delete(likeId)) {
-			return ApiResponse.success("success", ResponseCode.LIKES_DELETE_SUCCESS);
+			return ApiResponse.success("success", ResponseCode.LIKE_DELETE_SUCCESS);
 		}
 		return ApiResponse.fail("fail", ResponseCode.INTERNAL_SERVER_ERROR);
 	}

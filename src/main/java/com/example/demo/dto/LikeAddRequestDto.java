@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+import com.example.demo.entity.Duty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,5 +10,5 @@ import lombok.Data;
 public class LikeAddRequestDto {
 	private String classification;
 	private String memberId;
-	private String dutyId;
+	private Duty duty;
 }

@@ -15,9 +15,10 @@ public enum ResponseCode {
 	MEMBER_GET_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "사용자 정보 조회 성공"),
 	MEMBER_UPDATE_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "사용자 정보 수정 성공"),
 	MEMBER_DELETE_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "사용자 정보 삭제 성공"),
-	LIKES_INSERT_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "즐겨찾기 추가 성공"),
+	LIKE_INSERT_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "즐겨찾기 추가 성공"),
+	LIKE_GET_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "즐겨찾기 조회 성공"),
+	LIKE_DELETE_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "즐겨찾기 삭제 성공"),
 	LIKES_GET_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "즐겨찾기 목록 조회 성공"),
-	LIKES_DELETE_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "즐겨찾기 삭제 성공"),
 
 	REVIEWS_GET_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "리뷰 목록 조회 성공"),
 	REVIEWS_UPDATE_SUCCESS(HttpStatus.OK, ResultStatus.SUCCESS, "리뷰 수정 성공"),

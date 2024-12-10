@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import com.example.demo.entity.Like;
 
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long>{
+	Optional<Like> findByMember_MemberIdAndDuty_DutyId(String memberId, String dutyId);
 	List<Like> findAllByMember_MemberIdOrderByLikeIdDesc(String memberId);
 	List<Like> findAllByMember_MemberIdOrderByLikeIdDesc(String memberId, Limit limit);
 	List<Like> findAllByMember_MemberIdOrderByLikeIdDesc(String memberId, Pageable pageable);
