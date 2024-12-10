@@ -77,5 +77,34 @@
         SELECT * FROM `review`
         WHERE duty_id = #{dutyId}
     </select>
+    
+    
+    <select id="existsByMemberIdAndDutyId" resultType="boolean" parameterType="map">
+        SELECT COUNT(*) > 0
+        FROM `like`
+        WHERE `member_id` = #{memberId}
+        AND `duty_id` = #{dutyId}
+    </select>
+    
+    <select id="checklike" resultType="boolean" parameterType="map">
+    SELECT COUNT(1) > 0
+    FROM `like`
+    WHERE `classification` = #{classification}
+      AND `duty_id` = #{dutyId}
+      AND `member_id` = #{memberId}
+  </select>
+  
+  <insert id="addlike" parameterType="map">
+    INSERT INTO `like` (`classification`, `duty_id`, `member_id`)
+    VALUES (#{classification}, #{dutyId}, #{memberId})
+  </insert>
+  
+  <delete id="deletelike" parameterType="map">
+    DELETE FROM `like`
+    WHERE `classification` = #{classification}
+      AND `duty_id` = #{dutyId}
+      AND `member_id` = #{memberId}
+  </delete>
+    
 
 </mapper>

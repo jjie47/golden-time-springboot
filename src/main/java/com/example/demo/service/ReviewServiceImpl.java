@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -237,5 +238,79 @@ public class ReviewServiceImpl implements ReviewService{
     public List<ReviewDTO> getReviewsByDutyId(String dutyId) {
         return rMapper.getReviewsByDutyId(dutyId);
     }
+
+	@Override
+	public List<Integer> getPharmlike(List<String> hpid, String memberId) {
+		List<Integer> result = new ArrayList<>();
+
+        for (String dutyId : hpid) {
+            // DB에서 memberId와 dutyId로 `like` 테이블을 확인
+            boolean exists = reviewMapper.existsByMemberIdAndDutyId(memberId, dutyId);
+            
+            // 존재하면 1, 없으면 2
+            if (exists) {
+                result.add(1);
+            } else {
+                result.add(2);
+            }
+        }
+        
+		
+		return result;
+	}
+
+	@Override
+	public int getPharmlikeone(String hpid, String memberId) {
+		int result = 0;
+		
+		boolean exists = reviewMapper.existsByMemberIdAndDutyId(memberId, hpid);
+        
+        // 존재하면 1, 없으면 2
+        if (exists) {
+            result = 1;
+        } else {
+            result = 2;
+        }
+		return result;
+	}
+
+	@Override
+	public void likeadd(ReviewWriteDTO rv) {
+		boolean exist = reviewMapper.checkpharm(rv.getDutyId());
+		
+		//약국이 있다면
+		if (exist) {
+			
+			boolean exist2 = reviewMapper.checklike(rv.getDutyId(),rv.getMemberId(),rv.getClassification());
+				if (exist2) {
+					System.out.println("즐겨찾기가 있습니다");
+					reviewMapper.deletelike(rv.getDutyId(),rv.getMemberId(),rv.getClassification());
+					System.err.println("즐겨찾기 삭제 성공");
+				}
+				else {
+					System.out.println("즐겨찾기가 없습니다.");
+					reviewMapper.addlike(rv.getDutyId(),rv.getMemberId(),rv.getClassification());
+					System.out.println("즐겨찾기 등록 성공");
+				}
+
+		}
+
+		else {
+			//약국 정보 넣어주기
+			reviewMapper.insertPharm(rv);
+			System.out.println("약국 등록 성공");
+			boolean exist2 = reviewMapper.checklike(rv.getDutyId(),rv.getMemberId(),rv.getClassification());
+			if (exist2) {
+				System.out.println("즐겨찾기가 있습니다");
+				reviewMapper.deletelike(rv.getDutyId(),rv.getMemberId(),rv.getClassification());
+				System.err.println("즐겨찾기 삭제 성공");
+			}
+			else {
+				System.out.println("즐겨찾기가 없습니다.");
+				reviewMapper.addlike(rv.getDutyId(),rv.getMemberId(),rv.getClassification());
+				System.out.println("즐겨찾기 등록 성공");
+			}
+		}
+	}
 	
 }

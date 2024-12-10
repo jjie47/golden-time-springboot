@@ -43,4 +43,10 @@ public interface ReviewService {
 	// 병원ID에 해당하는 리뷰 목록 조회
 	List<ReviewDTO> getReviewsByDutyId(String dutyId);
 
+	List<Integer> getPharmlike(List<String> hpid, String memberId);
+
+	int getPharmlikeone(String hpid, String memberId);
+
+	void likeadd(ReviewWriteDTO rv);
+
 }

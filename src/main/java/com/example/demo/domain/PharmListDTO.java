@@ -7,4 +7,5 @@ public class PharmListDTO {
 	private String hpid;
 	private int count;
 	private double averageRating;
+	private String memberid;
 }
