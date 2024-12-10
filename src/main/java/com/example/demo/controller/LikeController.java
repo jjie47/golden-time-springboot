@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.LikeAddRequestDto;
 import com.example.demo.dto.LikeItemDto;
 import com.example.demo.dto.LikeListRequestDto;
 import com.example.demo.dto.LikeListResponseDto;
@@ -21,12 +24,12 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/member/{memberId}/*")
-public class LikeController {
+public class LikeController{
 	
 	@Autowired LikeService service;
 	
 	@GetMapping("likes")
-	public ApiResponse<LikeListResponseDto> getlist(@PathVariable String memberId, LikeListRequestDto likeReq, HttpServletRequest req) {
+	public ApiResponse<LikeListResponseDto> getList(@PathVariable String memberId, LikeListRequestDto likeReq, HttpServletRequest req) {
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
 			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
@@ -41,24 +44,8 @@ public class LikeController {
 		return ApiResponse.fail(response, ResponseCode.LIKES_NOT_FOUND);
 	}
 	
-//	@GetMapping("likes")
-//	public ApiResponse<List<LikeItemDto>> getlist(@PathVariable String memberId, HttpServletRequest req) {
-//		String loginMember = (String)req.getSession().getAttribute("loginMember");
-//		if(loginMember==null) {
-//			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
-//		}
-//		if(!loginMember.equals(memberId)) {
-//			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
-//		}
-//		List<LikeItemDto> list = service.getList(loginMember);
-//		if(list!=null) {
-//			return ApiResponse.success(list, ResponseCode.LIKES_GET_SUCCESS);
-//		}
-//		return ApiResponse.fail(list, ResponseCode.LIKES_NOT_FOUND);
-//	}
-	
 	@GetMapping("likes/limit")
-	public ApiResponse<List<LikeItemDto>> getlist(@PathVariable String memberId, @RequestParam int limit, HttpServletRequest req) {
+	public ApiResponse<List<LikeItemDto>> getList(@PathVariable String memberId, @RequestParam int limit, HttpServletRequest req) {
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
 			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
@@ -74,8 +61,8 @@ public class LikeController {
 	}
 	
 	@GetMapping("likes/classification")
-	public ApiResponse<List<LikeItemDto>> getlist(@PathVariable String memberId,
-													@RequestParam String classification,
+	public ApiResponse<LikeListResponseDto> getListWithClassification(@PathVariable String memberId,
+													LikeListRequestDto likeReq,
 													HttpServletRequest req) {
 		String loginMember = (String)req.getSession().getAttribute("loginMember");
 		if(loginMember==null) {
@@ -84,11 +71,45 @@ public class LikeController {
 		if(!loginMember.equals(memberId)) {
 			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
 		}
-		List<LikeItemDto> list = service.getList(loginMember, classification);
+		LikeListResponseDto list = service.getListWithClassification(likeReq);
 		if(list!=null) {
 			return ApiResponse.success(list, ResponseCode.LIKES_GET_SUCCESS);
 		}
 		return ApiResponse.fail(list, ResponseCode.LIKES_NOT_FOUND);
+	}
+	
+	@GetMapping("like")
+	public ApiResponse<Long> getId(@PathVariable String memberId,
+											@RequestParam String dutyId,
+											HttpServletRequest req) {
+		String loginMember = (String)req.getSession().getAttribute("loginMember");
+		if(loginMember==null) {
+			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
+		}
+		if(!loginMember.equals(memberId)) {
+			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
+		}
+		long likeId = service.getId(memberId, dutyId);
+		if(likeId>-1) {
+			return ApiResponse.success(likeId, ResponseCode.LIKE_GET_SUCCESS);
+		}
+		return ApiResponse.fail(-1L, ResponseCode.INTERNAL_SERVER_ERROR);
+	}
+	
+	@PostMapping("like")
+	public ApiResponse<Long> regist(@PathVariable String memberId,
+											@RequestBody LikeAddRequestDto likeReq,
+											HttpServletRequest req) {
+		String loginMember = (String)req.getSession().getAttribute("loginMember");
+		if(loginMember==null) {
+			return ApiResponse.fail(null, ResponseCode.UNAUTHORIZED);
+		}
+		if(!loginMember.equals(memberId)) {
+			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
+		}
+		System.out.println(likeReq);
+		long likeId = service.insert(likeReq);
+		return ApiResponse.success(likeId, ResponseCode.LIKE_INSERT_SUCCESS);
 	}
 	
 	@DeleteMapping("like/{likeId}")
@@ -103,7 +124,7 @@ public class LikeController {
 			return ApiResponse.fail(null, ResponseCode.FORBIDDEN);
 		}
 		if(service.delete(likeId)) {
-			return ApiResponse.success("success", ResponseCode.LIKES_DELETE_SUCCESS);
+			return ApiResponse.success("success", ResponseCode.LIKE_DELETE_SUCCESS);
 		}
 		return ApiResponse.fail("fail", ResponseCode.INTERNAL_SERVER_ERROR);
 	}

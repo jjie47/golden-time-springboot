@@ -1,9 +1,21 @@
 package com.example.demo.service;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.MemberInfoResponseDto;
 import com.example.demo.dto.MemberProfileResponseDto;
@@ -20,6 +32,9 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class MemberServiceImpl{
+	
+	@Value("${FILE_DIR}")
+	private String saveFolder;
 	
 	@Autowired
 	private MemberRepository memberRepository;
@@ -44,7 +59,6 @@ public class MemberServiceImpl{
 		Optional<Member> data = memberRepository.findByMemberId(memberId);
 		long reviewCnt = reviewRepository.countByMember_MemberId(memberId);
 		long likeCnt = likeRepository.countByMember_MemberId(memberId);
-		System.out.println(reviewCnt);
 		if(data.isEmpty()) {
 			// TODO: 예외 처리
 			return null;
@@ -52,10 +66,43 @@ public class MemberServiceImpl{
 		return MemberProfileResponseDto.toDto(data.get(), reviewCnt, likeCnt);
 	}
 	
-	public boolean update(MemberUpdateRequestDto member) {
+	public HashMap<String, Object> getProfileImage(String systemName) throws Exception{
+		Path path = Paths.get(saveFolder+systemName);
+		String contentType = Files.probeContentType(path);
+		Resource resource = new InputStreamResource(Files.newInputStream(path));
+		
+		HashMap<String, Object> datas = new HashMap<>();
+		datas.put("contentType", contentType);
+		datas.put("resource", resource);
+		return datas;
+	}
+	
+	public boolean update(MemberUpdateRequestDto member, MultipartFile file, String deleteFile) throws Exception{
 		Member data = em.find(Member.class, member.getMemberId());
 		if(data==null) {
 			return false;
+		}
+		if(file != null) {
+			String orgName = file.getOriginalFilename();
+			int lastIdx = orgName.lastIndexOf(".");
+			String ext = orgName.substring(lastIdx);
+			LocalDateTime now = LocalDateTime.now();
+			String time = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+			String systemName = time+UUID.randomUUID().toString()+ext;
+			String path = saveFolder+systemName;
+			data.setSystemName(systemName);
+			data.setOriginName(orgName);
+			file.transferTo(new File(path));
+		}
+		if(deleteFile != null && !deleteFile.equals("default_image.jpg")) {
+			File delFile = new File(saveFolder, deleteFile);
+			if(delFile.exists()) {
+				delFile.delete();
+			}
+			if(file == null) {
+				data.setSystemName("default_image.png");
+				data.setOriginName("default_image");
+			}
 		}
 		data.setPassword(member.getPassword());
 		data.setNickname(member.getNickname());

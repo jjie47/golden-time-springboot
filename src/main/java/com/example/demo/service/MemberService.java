@@ -1,6 +1,10 @@
 package com.example.demo.service;
 
 
+import com.example.demo.dto.MemberInfoResponseDto;
+import com.example.demo.dto.MemberProfileResponseDto;
+import com.example.demo.dto.MemberUpdateRequestDto;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -35,20 +35,20 @@ public class MemberServiceImplTest {
 	
 //	@Test
 	void update() {
-		Member actual = new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234");
-		memberRepository.save(actual);
-		MemberUpdateRequestDto member = new MemberUpdateRequestDto("testId", "1234", "change", "testEmail", "010-1234-1234");
-		if(memberService.update(member)) {
-			System.out.println("변경 성공");
-			MemberInfoResponseDto expected = memberService.getInfo("testId");
-			assertThat(expected).usingRecursiveComparison()
-			.ignoringFields("systemName")
-			.ignoringFields("originName")
-			.isEqualTo(member);
-		}
-		else {
-			System.out.println("실패");
-		}
+//		Member actual = new Member("testId", "1234", "nickname", "testEmail", "010-1234-1234");
+//		memberRepository.save(actual);
+//		MemberUpdateRequestDto member = new MemberUpdateRequestDto("testId", "1234", "change", "testEmail", "010-1234-1234");
+//		if(memberService.update(member)) {
+//			System.out.println("변경 성공");
+//			MemberInfoResponseDto expected = memberService.getInfo("testId");
+//			assertThat(expected).usingRecursiveComparison()
+//			.ignoringFields("systemName")
+//			.ignoringFields("originName")
+//			.isEqualTo(member);
+//		}
+//		else {
+//			System.out.println("실패");
+//		}
 		
 	}
 	

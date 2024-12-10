@@ -42,7 +42,7 @@ public class Member {
 	private String phoneNumber;
 	
 	@Column(length=3000)
-	@ColumnDefault("'default_image'")
+	@ColumnDefault("'default_image.png'")
 	private String systemName;
 	
 	@Column(length=3000)
