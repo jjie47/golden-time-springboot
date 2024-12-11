@@ -84,17 +84,19 @@ public class MemberServiceImpl{
 		}
 		if(file != null) {
 			String orgName = file.getOriginalFilename();
-			int lastIdx = orgName.lastIndexOf(".");
-			String ext = orgName.substring(lastIdx);
-			LocalDateTime now = LocalDateTime.now();
-			String time = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
-			String systemName = time+UUID.randomUUID().toString()+ext;
-			String path = saveFolder+systemName;
-			data.setSystemName(systemName);
-			data.setOriginName(orgName);
-			file.transferTo(new File(path));
+			if(orgName!=data.getOriginName()) {
+				int lastIdx = orgName.lastIndexOf(".");
+				String ext = orgName.substring(lastIdx);
+				LocalDateTime now = LocalDateTime.now();
+				String time = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
+				String systemName = time+UUID.randomUUID().toString()+ext;
+				String path = saveFolder+systemName;
+				data.setSystemName(systemName);
+				data.setOriginName(orgName);
+				file.transferTo(new File(path));
+			}
 		}
-		if(deleteFile != null && !deleteFile.equals("default_image.jpg")) {
+		if(deleteFile != null && !deleteFile.equals("default_image.png")) {
 			File delFile = new File(saveFolder, deleteFile);
 			if(delFile.exists()) {
 				delFile.delete();
@@ -114,6 +116,13 @@ public class MemberServiceImpl{
 	public boolean delete(String memberId) {
 		Optional<Member> data = memberRepository.findByMemberId(memberId);
 		if(data.isPresent()) {
+			String deleteFile = data.get().getSystemName();
+			if(!deleteFile.equals("default_image.png")) {
+				File delFile = new File(saveFolder, deleteFile);
+				if(delFile.exists()) {
+					delFile.delete();
+				}
+			}
 			memberRepository.deleteById(memberId);
 			data = memberRepository.findByMemberId(memberId);
 			if(data.isEmpty()) {
