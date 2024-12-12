@@ -1,14 +1,14 @@
-insert into member (member_id, `password`, `nickname`, `email`, `phone_number`, `system_name`) values
-	('apple123', 'asdf1234!', '김사과', 'apple@naver.com', '01012341234', 'default_image.png'),
-    ('banana123', 'asdf1234!', '반하나', 'banana@naver.com', '01012341234', 'default_image.png'),
-    ('cherry123', 'asdf1234!', '이체리', 'cherry@naver.com', '01012341234', 'default_image.png'),
-    ('date123', 'asdf1234!', '대추', 'Date@naver.com', '01012341234', 'default_image.png'),
-    ('elderberry123', 'asdf1234!', '엘더베리', 'Elderberry@naver.com', '01012341234', 'default_image.png'),
-    ('fig123', 'asdf1234!', '무화과', 'Fig@naver.com', '01012341234', 'default_image.png'),
-    ('grape123', 'asdf1234!', '포도', 'Grape@naver.com', '01012341234', 'default_image.png'),
-    ('honeydew123', 'asdf1234!', '허니듀', 'Honeydew@naver.com', '01012341234', 'default_image.png'),
-    ('indianfig123', 'asdf1234!', '인디언무화과', 'Indianfig@naver.com', '01012341234', 'default_image.png'),
-    ('jackfruit123', 'asdf1234!', '잭프루트', 'Jackfruit@naver.com', '01012341234', 'default_image.png');
+insert into member (member_id, `password`, `nickname`, `email`, `phone_number`, `origin_name`,`system_name`) values
+	('apple123', 'asdf1234!', '김사과', 'apple@naver.com', '01012341234', 'default_image.png', 'default_image.png'),
+    ('banana123', 'asdf1234!', '반하나', 'banana@naver.com', '01012341234', 'banana.png', 'banana.png'),
+    ('cherry123', 'asdf1234!', '이체리', 'cherry@naver.com', '01012341234', 'cherry.png', 'cherry.png'),
+    ('date123', 'asdf1234!', '대추', 'Date@naver.com', '01012341234', 'date.jpg', 'date.jpg'),
+    ('elderberry123', 'asdf1234!', '엘더베리', 'Elderberry@naver.com', '01012341234', 'elderberry.jpg', 'elderberry.jpg'),
+    ('fig123', 'asdf1234!', '무화과', 'Fig@naver.com', '01012341234', 'fig.jpg', 'fig.jpg'),
+    ('grape123', 'asdf1234!', '포도', 'Grape@naver.com', '01012341234', 'grape.jpg', 'grape.jpg'),
+    ('honeydew123', 'asdf1234!', '허니듀', 'Honeydew@naver.com', '01012341234', 'honeydew.jpg', 'honeydew.jpg'),
+    ('indianfig123', 'asdf1234!', '인디언무화과', 'Indianfig@naver.com', '01012341234', 'default_image.png', 'default_image.png'),
+    ('jackfruit123', 'asdf1234!', '잭프루트', 'Jackfruit@naver.com', '01012341234', 'default_image.png', 'default_image.png');
     
 insert into duty (duty_id, duty_name, duty_div, duty_tel) values
 	('A1107084', '(의)열린의료재단서초열린의원', '의원', '02-522-0872'),
