@@ -77,6 +77,19 @@ public class MemberServiceImpl{
 		return datas;
 	}
 	
+	public HashMap<String, Object> getMemberImage(String memberId) throws Exception{
+		Member member = memberRepository.findByMemberId(memberId).get();
+		String systemName = member.getSystemName();
+		Path path = Paths.get(saveFolder+systemName);
+		String contentType = Files.probeContentType(path);
+		Resource resource = new InputStreamResource(Files.newInputStream(path));
+		
+		HashMap<String, Object> datas = new HashMap<>();
+		datas.put("contentType", contentType);
+		datas.put("resource", resource);
+		return datas;
+	}
+	
 	public boolean update(MemberUpdateRequestDto member, MultipartFile file, String deleteFile) throws Exception{
 		Member data = em.find(Member.class, member.getMemberId());
 		if(data==null) {

@@ -246,6 +246,17 @@ public class MemberController {
 		return ApiResponse.fail(null, ResponseCode.MEMBER_NOT_FOUND);
 	}
 	
+	@GetMapping("{memberId}/member-image")
+	public ResponseEntity<Resource> getMemberImage(@PathVariable String memberId, HttpServletRequest req) throws Exception{
+		HashMap<String, Object> datas = mService.getMemberImage(memberId);
+		String contentType = (String)datas.get("contentType");
+		Resource resource = (Resource)datas.get("resource");
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_TYPE, contentType);		
+		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
+	}
+	
 	@GetMapping("{memberId}/profile-image/{systemName}")
 	public ResponseEntity<Resource> getProfile(@PathVariable String memberId,
 															@PathVariable String systemName,
