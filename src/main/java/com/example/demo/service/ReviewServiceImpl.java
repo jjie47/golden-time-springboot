@@ -62,7 +62,7 @@ public class ReviewServiceImpl implements ReviewService{
 		//닉네임 받아오기
 		for (PharmReviewDTO review : result) {
 	        // 리뷰의 memberid를 통해 닉네임 가져오기
-	        String nickname = reviewMapper.getNickName(review.getMemberid());
+	        String nickname = reviewMapper.getNickName(review.getMemberId());
 	        
 	        // 가져온 닉네임을 PharmReviewDTO에 세팅
 	        review.setNickname(nickname);
